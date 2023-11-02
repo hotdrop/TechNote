@@ -5,7 +5,14 @@ import 'package:tech_note/model/tag.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 
 class TagPreviewChip extends StatelessWidget {
-  const TagPreviewChip({super.key, required this.name, this.url, this.imageByteData, required this.tagColor, required this.isTextColorBlack});
+  const TagPreviewChip({
+    super.key,
+    required this.name,
+    this.url,
+    this.imageByteData,
+    required this.tagColor,
+    required this.isTextColorBlack,
+  });
 
   final String name;
   final String? url;
