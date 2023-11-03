@@ -44,10 +44,19 @@ Webアプリの場合は誰でもアクセス可能なので、FirebaseのAuthen
 2. Technique
 3. Platform&Tool
 4. Media
+## 読み込みタイミング
+Firestoreは読み込み回数で従量課金されることと、外でも閲覧したいのでネットワーク通信はできるだけ最小限に抑えます。
+Firestoreにデータの更新日時docを持ちます。一度アプリ側でデータを全取得したらその日時を記録しておきます。
+次回アプリを開いた際はローカルの日時とFirestoreに保持した日時をみて、更新されていたらデータを再取得します。
+この時、タグ情報は無条件で全取得します。エントリ情報はupdateAtを見て更新されたデータのみ取得します。
 ## データ構造
 Firestoreのデータ構造を決めます。
 ```
 TechNote(col)
+  - updateInfo(doc)
+    [Field]
+    - entryVersion: エントリの更新日時
+    - tagVersion: タグの更新日時
   - TechEntry(doc)
     - Entries Collection(col)
       - [ランダムID]
@@ -67,6 +76,4 @@ TechNote(col)
         - thumbnailUrl: サムネイルURL(StorageのURL)
         - color: カラー(hex)
         - area: エリアID
-        - createdAt: 作成日
-        - updatedAt: 更新日
 ```
