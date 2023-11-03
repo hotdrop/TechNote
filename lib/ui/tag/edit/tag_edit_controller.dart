@@ -34,7 +34,14 @@ class TagEditController extends _$TagEditController {
   }
 
   Future<void> save() async {
-    // TODO 登録処理を行う
+    final tag = UnregisterdTag(
+      name: ref.read(tagEditNameProvider),
+      tagColor: ref.read(tagEditColorProvider),
+      isTextColorBlack: ref.read(tagEditIsTextColorBlackProvider),
+      tagArea: ref.read(tagEditSelectTagAreaProvider)!,
+      imageBytes: ref.read(tagEditImageByteProvider),
+    );
+    await ref.read(tagNotifierProvider.notifier).save(tag);
   }
 }
 

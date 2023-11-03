@@ -30,9 +30,10 @@ class HomePage extends ConsumerWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
-                final tag = Tag(
+                final tag = RegisteredTag(
+                  tagId: '13',
                   name: '認証・認可',
-                  thumbnailUrl: null,
+                  thumbnailImageUrl: null,
                   tagColor: Colors.orange,
                   isTextColorBlack: true,
                   tagArea: TagAreaEnum.technique,
