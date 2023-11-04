@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_network/image_network.dart';
+import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/tag.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 
@@ -21,7 +24,7 @@ class TagPreviewChip extends StatelessWidget {
   final bool isTextColorBlack;
 
   factory TagPreviewChip.createFromTag(Tag tag) {
-    return TagPreviewChip(name: tag.name, tagColor: tag.tagColor, url: tag.thumbnailUrl, isTextColorBlack: tag.isTextColorBlack);
+    return TagPreviewChip(name: tag.name, tagColor: tag.color, url: tag.thumbnailUrl, isTextColorBlack: tag.isTextColorBlack);
   }
 
   @override
@@ -29,7 +32,7 @@ class TagPreviewChip extends StatelessWidget {
     final label = (name.isEmpty) ? 'no name' : name;
     return ChoiceChip(
       avatar: _avatar(),
-      label: AppText.normal(label, textColor: isTextColorBlack ? Colors.black : Colors.white),
+      label: AppText.normal(label, color: isTextColorBlack ? Colors.black : Colors.white),
       backgroundColor: Theme.of(context).disabledColor,
       selectedColor: tagColor,
       selected: true,
@@ -49,8 +52,17 @@ class TagPreviewChip extends StatelessWidget {
         ),
       );
     } else if (url != null) {
-      // TODO cacheイメージを使うURL
-      return CircleAvatar(child: Image.network(url!));
+      return ClipOval(
+        child: ImageNetwork(
+          image: url!,
+          imageCache: FastCachedImageProvider(url!),
+          height: 30,
+          width: 30,
+          onLoading: const CircularProgressIndicator(
+            color: AppTheme.primaryColor,
+          ),
+        ),
+      );
     } else {
       return const CircleAvatar(child: Icon(Tag.defaultIcon));
     }

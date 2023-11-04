@@ -6,6 +6,11 @@ import 'package:tech_note/repository/tag_repository.dart';
 
 final tagNotifierProvider = NotifierProvider<TagNotifier, List<Tag>>(TagNotifier.new);
 
+// エリアごとのタグ情報が欲しい場合はこのProviderをwatchする
+final tagsByAreaProvider = Provider.family((ref, TagAreaEnum tagArea) {
+  return ref.watch(tagNotifierProvider).where((e) => e.tagArea == tagArea).toList();
+});
+
 class TagNotifier extends Notifier<List<Tag>> {
   @override
   List<Tag> build() {
@@ -16,32 +21,42 @@ class TagNotifier extends Notifier<List<Tag>> {
     state = await ref.read(tagRepositoryProvider).findAll();
   }
 
-  Future<void> save(Tag tag) async {
-    await ref.read(tagRepositoryProvider).save(tag);
-    switch (tag) {
-      case RegisteredTag():
-        // TODO stateを置き換える
-        break;
-      case UnregisterdTag():
-        // TODO stateに追加
-        break;
+  Future<void> save(Tag tag, Uint8List? imageBytes) async {
+    await ref.read(tagRepositoryProvider).save(tag, imageBytes);
+    if (tag.isUnregisterd()) {
+      state = [...state, tag];
+    } else {
+      final idx = state.indexWhere((t) => t.id == tag.id);
+      final newTags = state;
+      newTags[idx] = tag;
+      state = [...newTags];
     }
   }
 }
 
-sealed class Tag {
-  Tag(this.name, this.tagColor, this.isTextColorBlack, this.tagArea);
-
-  final String name;
-  final Color tagColor;
-  final bool isTextColorBlack;
-  final TagAreaEnum tagArea;
+class Tag {
+  Tag({
+    required this.id,
+    required this.name,
+    required this.color,
+    required this.isTextColorBlack,
+    required this.tagArea,
+    this.thumbnailUrl,
+  });
 
   static const defaultIcon = Icons.label;
   static const noneId = '';
 
-  String get id;
-  String? get thumbnailUrl;
+  final String id;
+  final String name;
+  final Color color;
+  final bool isTextColorBlack;
+  final TagAreaEnum tagArea;
+  final String? thumbnailUrl;
+
+  bool isUnregisterd() {
+    return id == noneId;
+  }
 
   static String colorToHex(Color color) {
     return '#${color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}';
@@ -54,44 +69,6 @@ sealed class Tag {
   }
 }
 
-class RegisteredTag extends Tag {
-  RegisteredTag({
-    required String name,
-    required Color tagColor,
-    required bool isTextColorBlack,
-    required TagAreaEnum tagArea,
-    required this.tagId,
-    required this.thumbnailImageUrl,
-  }) : super(name, tagColor, isTextColorBlack, tagArea);
-
-  final String tagId;
-  final String? thumbnailImageUrl;
-
-  @override
-  String get id => tagId;
-
-  @override
-  String? get thumbnailUrl => thumbnailImageUrl;
-}
-
-class UnregisterdTag extends Tag {
-  UnregisterdTag({
-    required String name,
-    required Color tagColor,
-    required bool isTextColorBlack,
-    required TagAreaEnum tagArea,
-    this.imageBytes,
-  }) : super(name, tagColor, isTextColorBlack, tagArea);
-
-  final Uint8List? imageBytes;
-
-  @override
-  String get id => Tag.noneId;
-
-  @override
-  String? get thumbnailUrl => null;
-}
-
 enum TagAreaEnum {
   langAndFw('Language & Framework'),
   technique('Technique'),
@@ -101,8 +78,4 @@ enum TagAreaEnum {
   final String name;
 
   const TagAreaEnum(this.name);
-
-  // static TagArea toModel(int index) {
-  //   // TODO
-  // }
 }

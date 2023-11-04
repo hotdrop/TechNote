@@ -18,41 +18,35 @@ class TagRepository {
     //  ローカルの日時と比較し、古ければFirestoreから全取得してローカルDBに保存
 
     // ローカルDBからデータを取得して返す
-    await Future<void>.delayed(const Duration(seconds: 1));
     return _dummyData();
   }
 
-  Future<void> save(Tag tag) async {
-    // この判定はFirestoreやローカルDBでやれば良いかも
-    switch (tag) {
-      case RegisteredTag():
-        // TODO IDを指定して保存
-        // TODO ローカルDB書き換え
-        break;
-      case UnregisterdTag():
-        // TODO 新規保存
-        // TODO ローカルDB書き換え
-        break;
-    }
-    // Colorを16進数にする
+  Future<void> save(Tag tag, Uint8List? imageBytes) async {
     await Future<void>.delayed(const Duration(seconds: 1));
+    // この判定はFirestoreやローカルDBの方が良いかもしれない
+    if (tag.isUnregisterd()) {
+      // TODO 新規保存してローカルDB書き換え
+    } else {
+      // TODO IDを指定して保存。imageBytesがnullでなければサムネイル画像更新
+      // TODO ローカルDBに保存
+    }
   }
 
   List<Tag> _dummyData() {
     return [
-      RegisteredTag(tagId: '1', name: 'Kotlin', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 224, 137, 53), isTextColorBlack: false, tagArea: TagAreaEnum.langAndFw),
-      RegisteredTag(tagId: '2', name: 'Dart', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 120, 245, 147), isTextColorBlack: true, tagArea: TagAreaEnum.langAndFw),
-      RegisteredTag(tagId: '3', name: 'Flutter', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 102, 226, 243), isTextColorBlack: true, tagArea: TagAreaEnum.langAndFw),
-      RegisteredTag(tagId: '4', name: 'React', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 235, 244, 131), isTextColorBlack: true, tagArea: TagAreaEnum.langAndFw),
-      RegisteredTag(tagId: '5', name: 'Vue', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 41, 180, 71), isTextColorBlack: false, tagArea: TagAreaEnum.langAndFw),
-      RegisteredTag(tagId: '6', name: 'Javascript', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 240, 249, 172), isTextColorBlack: true, tagArea: TagAreaEnum.langAndFw),
-      RegisteredTag(tagId: '7', name: '技術書', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 174, 174, 173), isTextColorBlack: false, tagArea: TagAreaEnum.media),
-      RegisteredTag(tagId: '8', name: 'Slide', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 33, 139, 29), isTextColorBlack: false, tagArea: TagAreaEnum.media),
-      RegisteredTag(tagId: '9', name: 'YouTube', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 244, 44, 44), isTextColorBlack: false, tagArea: TagAreaEnum.media),
-      RegisteredTag(tagId: '10', name: 'Android', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 20, 133, 18), isTextColorBlack: false, tagArea: TagAreaEnum.platform),
-      RegisteredTag(tagId: '11', name: 'iOS', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 188, 187, 187), isTextColorBlack: true, tagArea: TagAreaEnum.platform),
-      RegisteredTag(tagId: '12', name: 'Firebase', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 244, 161, 44), isTextColorBlack: true, tagArea: TagAreaEnum.platform),
-      RegisteredTag(tagId: '13', name: 'AWS', thumbnailImageUrl: '', tagColor: Color.fromARGB(255, 246, 67, 67), isTextColorBlack: false, tagArea: TagAreaEnum.platform),
+      Tag(id: '1', name: 'Kotlin', color: Color.fromARGB(255, 224, 137, 53), isTextColorBlack: false, tagArea: TagAreaEnum.langAndFw),
+      Tag(id: '2', name: 'Dart', color: Color.fromARGB(255, 120, 245, 147), isTextColorBlack: true, tagArea: TagAreaEnum.langAndFw),
+      Tag(id: '3', name: 'Flutter', color: Color.fromARGB(255, 102, 226, 243), isTextColorBlack: true, tagArea: TagAreaEnum.langAndFw),
+      Tag(id: '4', name: 'React', color: Color.fromARGB(255, 235, 244, 131), isTextColorBlack: true, tagArea: TagAreaEnum.langAndFw),
+      Tag(id: '5', name: 'Vue', color: Color.fromARGB(255, 41, 180, 71), isTextColorBlack: false, tagArea: TagAreaEnum.langAndFw),
+      Tag(id: '6', name: 'Javascript', color: Color.fromARGB(255, 240, 249, 172), isTextColorBlack: true, tagArea: TagAreaEnum.langAndFw),
+      Tag(id: '7', name: '技術書', color: Color.fromARGB(255, 174, 174, 173), isTextColorBlack: false, tagArea: TagAreaEnum.media),
+      Tag(id: '8', name: 'Slide', color: Color.fromARGB(255, 33, 139, 29), isTextColorBlack: false, tagArea: TagAreaEnum.media),
+      Tag(id: '9', name: 'YouTube', color: Color.fromARGB(255, 244, 44, 44), isTextColorBlack: false, tagArea: TagAreaEnum.media),
+      Tag(id: '10', name: 'Android', color: Color.fromARGB(255, 20, 133, 18), isTextColorBlack: false, tagArea: TagAreaEnum.platform),
+      Tag(id: '11', name: 'iOS', color: Color.fromARGB(255, 188, 187, 187), isTextColorBlack: true, tagArea: TagAreaEnum.platform),
+      Tag(id: '12', name: 'Firebase', color: Color.fromARGB(255, 244, 161, 44), isTextColorBlack: true, tagArea: TagAreaEnum.platform),
+      Tag(id: '13', name: 'AWS', color: Color.fromARGB(255, 246, 67, 67), isTextColorBlack: false, tagArea: TagAreaEnum.platform),
     ];
   }
 }

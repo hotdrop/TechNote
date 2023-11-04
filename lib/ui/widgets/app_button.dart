@@ -1,18 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 
-class SaveButton extends StatelessWidget {
-  const SaveButton({super.key, required this.enable, required this.onPressed});
+class SaveButton extends StatefulWidget {
+  const SaveButton({super.key, required this.width, required this.enable, required this.onPressed});
 
   final bool enable;
-  final void Function() onPressed;
+  final double width;
+  final Future<void> Function() onPressed;
+
+  @override
+  State<SaveButton> createState() => _SaveButtonState();
+}
+
+class _SaveButtonState extends State<SaveButton> {
+  final _controller = RoundedLoadingButtonController();
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: enable ? onPressed : null,
-      icon: const Icon(Icons.save),
-      label: AppText.normal('Save'),
+    return SizedBox(
+      width: widget.width,
+      child: RoundedLoadingButton(
+        onPressed: widget.enable
+            ? () async {
+                await widget.onPressed();
+                _controller.success();
+              }
+            : null,
+        controller: _controller,
+        child: AppText.normal('Save'),
+      ),
     );
   }
 }

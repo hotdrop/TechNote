@@ -24,6 +24,9 @@ class AppTheme {
       selectedIconTheme: IconThemeData(color: primaryLightColor),
       selectedLabelTextStyle: TextStyle(color: primaryLightColor),
     ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: primaryLightColor,
+    ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: primaryLightColor,

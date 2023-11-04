@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/tag.dart';
-import 'package:tech_note/ui/tag/tag_controller.dart';
+import 'package:tech_note/ui/tag/tag_page_controller.dart';
 
 part 'tag_edit_controller.g.dart';
 
@@ -34,14 +34,24 @@ class TagEditController extends _$TagEditController {
   }
 
   Future<void> save() async {
-    final tag = UnregisterdTag(
-      name: ref.read(tagEditNameProvider),
-      tagColor: ref.read(tagEditColorProvider),
-      isTextColorBlack: ref.read(tagEditIsTextColorBlackProvider),
-      tagArea: ref.read(tagEditSelectTagAreaProvider)!,
-      imageBytes: ref.read(tagEditImageByteProvider),
-    );
-    await ref.read(tagNotifierProvider.notifier).save(tag);
+    final selectTag = ref.read(tagPageSelectProvider);
+    final tag = (selectTag == null)
+        ? Tag(
+            id: Tag.noneId,
+            name: ref.read(tagEditNameProvider),
+            color: ref.read(tagEditColorProvider),
+            isTextColorBlack: ref.read(tagEditIsTextColorBlackProvider),
+            tagArea: ref.read(tagEditSelectTagAreaProvider)!,
+          )
+        : Tag(
+            id: selectTag.id,
+            name: ref.read(tagEditNameProvider),
+            color: ref.read(tagEditColorProvider),
+            isTextColorBlack: ref.read(tagEditIsTextColorBlackProvider),
+            tagArea: ref.read(tagEditSelectTagAreaProvider)!,
+            thumbnailUrl: selectTag.thumbnailUrl,
+          );
+    await ref.read(tagNotifierProvider.notifier).save(tag, ref.read(tagEditImageByteProvider));
   }
 }
 
@@ -57,7 +67,6 @@ class _UiState {
     required this.inputIsTextColorBlack,
     required this.inputTagArea,
     required this.inputImageBytes,
-    this.currentThumbnailUrl,
   });
 
   final String inputName;
@@ -65,7 +74,6 @@ class _UiState {
   final bool inputIsTextColorBlack;
   final TagAreaEnum? inputTagArea;
   final Uint8List? inputImageBytes;
-  final String? currentThumbnailUrl;
 
   factory _UiState.create() {
     return _UiState._(
@@ -80,11 +88,10 @@ class _UiState {
   factory _UiState.createFromTag(Tag tag) {
     return _UiState._(
       inputName: tag.name,
-      inputColor: tag.tagColor,
+      inputColor: tag.color,
       inputIsTextColorBlack: tag.isTextColorBlack,
       inputTagArea: tag.tagArea,
       inputImageBytes: null,
-      currentThumbnailUrl: tag.thumbnailUrl,
     );
   }
 
@@ -101,7 +108,6 @@ class _UiState {
       inputIsTextColorBlack: inputIsTextColorBlack ?? this.inputIsTextColorBlack,
       inputTagArea: inputTagArea ?? this.inputTagArea,
       inputImageBytes: inputImageBytes ?? this.inputImageBytes,
-      currentThumbnailUrl: currentThumbnailUrl,
     );
   }
 }

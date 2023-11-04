@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/model/tag.dart';
 import 'package:tech_note/ui/tag/edit/tag_edit_controller.dart';
-import 'package:tech_note/ui/tag/edit/tag_preview_chip.dart';
-import 'package:tech_note/ui/tag/tag_controller.dart';
+import 'package:tech_note/ui/widgets/tag_preview_chip.dart';
+import 'package:tech_note/ui/tag/tag_page_controller.dart';
 import 'package:tech_note/ui/widgets/app_button.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 import 'package:tech_note/ui/widgets/color_bullet_dialog.dart';
@@ -41,7 +41,7 @@ class _AlertDialogWrapper extends ConsumerWidget {
             SizedBox(height: 16),
             _ViewTagAreaDropdown(),
             Spacer(),
-            _ViewSaveButton(),
+            _ViewButtons(),
           ],
         ),
       ),
@@ -170,15 +170,30 @@ class _ViewTagAreaDropdown extends ConsumerWidget {
   }
 }
 
-class _ViewSaveButton extends ConsumerWidget {
-  const _ViewSaveButton();
+class _ViewButtons extends ConsumerWidget {
+  const _ViewButtons();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SaveButton(
-        enable: ref.watch(tagEditPreparedSaveProvider),
-        onPressed: () {
-          // TODO 登録処理を行う
-        });
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: AppText.normal('Cancel'),
+        ),
+        const SizedBox(width: 24),
+        SaveButton(
+            width: 150,
+            enable: ref.watch(tagEditPreparedSaveProvider),
+            onPressed: () async {
+              final navigator = Navigator.of(context);
+              await ref.read(tagEditControllerProvider.notifier).save();
+              Future<void>.delayed(const Duration(seconds: 1)).then((_) {
+                navigator.pop();
+              });
+            }),
+      ],
+    );
   }
 }

@@ -2,14 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tech_note/model/tag.dart';
 
-part 'tag_controller.g.dart';
+part 'tag_page_controller.g.dart';
 
 @riverpod
-class TagController extends _$TagController {
+class TagPageController extends _$TagPageController {
   @override
-  Future<void> build() async {
-    await ref.read(tagNotifierProvider.notifier).onLoad();
-  }
+  void build() {}
 
   void selectTag(Tag? tag) {
     ref.read(tagPageSelectProvider.notifier).state = tag;
