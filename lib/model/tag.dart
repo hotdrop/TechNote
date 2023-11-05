@@ -23,7 +23,7 @@ class TagNotifier extends Notifier<List<Tag>> {
 
   Future<void> save(Tag tag, Uint8List? imageBytes) async {
     await ref.read(tagRepositoryProvider).save(tag, imageBytes);
-    if (tag.isUnregisterd()) {
+    if (tag.isUnregistered()) {
       state = [...state, tag];
     } else {
       final idx = state.indexWhere((t) => t.id == tag.id);
@@ -54,7 +54,7 @@ class Tag {
   final TagAreaEnum tagArea;
   final String? thumbnailUrl;
 
-  bool isUnregisterd() {
+  bool isUnregistered() {
     return id == noneId;
   }
 

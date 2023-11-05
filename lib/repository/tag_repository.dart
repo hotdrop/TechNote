@@ -23,7 +23,7 @@ class TagRepository {
 
   Future<void> save(Tag tag, Uint8List? imageBytes) async {
     await Future<void>.delayed(const Duration(seconds: 1));
-    if (tag.isUnregisterd()) {
+    if (tag.isUnregistered()) {
       // TODO 新規保存してローカルDB書き換え
     } else {
       // TODO IDを指定して保存。imageBytesがnullでなければサムネイル画像更新
