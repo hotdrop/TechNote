@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 
 class SaveButton extends StatefulWidget {
@@ -28,6 +29,7 @@ class _SaveButtonState extends State<SaveButton> {
               }
             : null,
         controller: _controller,
+        color: AppTheme.primaryLightColor,
         child: AppText.normal('Save'),
       ),
     );

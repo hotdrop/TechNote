@@ -2,7 +2,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/model/tag.dart';
-import 'package:tech_note/ui/tag/edit/tag_edit_controller.dart';
 import 'package:tech_note/ui/widgets/tag_preview_chip.dart';
 import 'package:tech_note/ui/tag/tag_page_controller.dart';
 import 'package:tech_note/ui/widgets/app_button.dart';
@@ -11,7 +10,7 @@ import 'package:tech_note/ui/widgets/color_bullet_dialog.dart';
 import 'package:tech_note/ui/widgets/tag_area_dropdown.dart';
 
 class TagEditDialog {
-  Future<void> show(BuildContext context) async {
+  static Future<void> show(BuildContext context) async {
     return await showDialog<void>(
       context: context,
       builder: (context) => const _AlertDialogWrapper(),
@@ -87,7 +86,7 @@ class _ViewPickThumbnailButton extends ConsumerWidget {
         final result = await FilePicker.platform.pickFiles(type: FileType.image);
         if (result != null) {
           final imageBytes = result.files.first.bytes!;
-          ref.read(tagEditControllerProvider.notifier).inputImageByte(imageBytes);
+          ref.read(tagPageControllerProvider.notifier).inputImageByte(imageBytes);
         }
       },
       icon: const Icon(Icons.image),
@@ -108,7 +107,7 @@ class _ViewSelectColorButton extends ConsumerWidget {
           context: context,
           currentColor: ref.read(tagEditColorProvider),
           onSelected: (Color selectColor) {
-            ref.read(tagEditControllerProvider.notifier).inputColor(selectColor);
+            ref.read(tagPageControllerProvider.notifier).inputColor(selectColor);
           },
         );
       },
@@ -129,7 +128,7 @@ class _ViewTagNameTextField extends ConsumerWidget {
       ),
       initialValue: ref.watch(tagPageSelectProvider)?.name,
       onChanged: (String newVal) {
-        ref.read(tagEditControllerProvider.notifier).inputTagName(newVal);
+        ref.read(tagPageControllerProvider.notifier).inputTagName(newVal);
       },
     );
   }
@@ -146,7 +145,7 @@ class _ViewTextColorCheckBox extends ConsumerWidget {
           value: ref.watch(tagEditIsTextColorBlackProvider),
           onChanged: (bool? value) {
             if (value != null) {
-              ref.read(tagEditControllerProvider.notifier).inputIsTextColorBlack(value);
+              ref.read(tagPageControllerProvider.notifier).inputIsTextColorBlack(value);
             }
           },
         ),
@@ -164,7 +163,7 @@ class _ViewTagAreaDropdown extends ConsumerWidget {
     return TagAreaDropdown(
       currentTagArea: ref.watch(tagEditSelectTagAreaProvider),
       onChanged: (TagAreaEnum value) {
-        ref.read(tagEditControllerProvider.notifier).inputTagArea(value);
+        ref.read(tagPageControllerProvider.notifier).inputTagArea(value);
       },
     );
   }
@@ -188,7 +187,7 @@ class _ViewButtons extends ConsumerWidget {
             enable: ref.watch(tagEditPreparedSaveProvider),
             onPressed: () async {
               final navigator = Navigator.of(context);
-              await ref.read(tagEditControllerProvider.notifier).save();
+              await ref.read(tagPageControllerProvider.notifier).save();
               Future<void>.delayed(const Duration(seconds: 1)).then((_) {
                 navigator.pop();
               });

@@ -23,7 +23,6 @@ class TagRepository {
 
   Future<void> save(Tag tag, Uint8List? imageBytes) async {
     await Future<void>.delayed(const Duration(seconds: 1));
-    // この判定はFirestoreやローカルDBの方が良いかもしれない
     if (tag.isUnregisterd()) {
       // TODO 新規保存してローカルDB書き換え
     } else {

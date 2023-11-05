@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/tag.dart';
-import 'package:tech_note/ui/tag/edit/tag_edit_dialog.dart';
+import 'package:tech_note/ui/tag/tag_edit_dialog.dart';
 import 'package:tech_note/ui/tag/tag_page_controller.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 import 'package:tech_note/ui/widgets/tag_chip.dart';
@@ -26,7 +26,8 @@ class TagPage extends ConsumerWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          // TODO 新規登録
+          ref.read(tagPageSelectProvider.notifier).state = null;
+          TagEditDialog.show(context);
         },
       ),
     );
@@ -55,8 +56,7 @@ class _ViewTagArea extends ConsumerWidget {
                     isSelected: true,
                     onSelected: (bool isSelect) {
                       ref.read(tagPageSelectProvider.notifier).state = e;
-                      final tagEditDialog = TagEditDialog();
-                      tagEditDialog.show(context);
+                      TagEditDialog.show(context);
                     },
                   ))
               .toList(),
