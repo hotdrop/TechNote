@@ -21,6 +21,18 @@ class TagNotifier extends Notifier<List<Tag>> {
     state = await ref.read(tagRepositoryProvider).findAll();
   }
 
+  List<Tag> getTags({required List<int> ids, int? maxLength}) {
+    final results = state.where((tag) => ids.contains(tag.id)).toList();
+    if (maxLength == null || results.length <= maxLength) {
+      return results;
+    }
+    return results.getRange(0, maxLength).toList();
+  }
+
+  Tag? getTag(int id) {
+    return state.where((tag) => tag.id == id).firstOrNull;
+  }
+
   Future<void> save(Tag tag, Uint8List? imageBytes) async {
     await ref.read(tagRepositoryProvider).save(tag, imageBytes);
     if (tag.isUnregistered()) {
@@ -45,9 +57,9 @@ class Tag {
   });
 
   static const defaultIcon = Icons.label;
-  static const noneId = '';
+  static const noneId = -1;
 
-  final String id;
+  final int id;
   final String name;
   final Color color;
   final bool isTextColorBlack;

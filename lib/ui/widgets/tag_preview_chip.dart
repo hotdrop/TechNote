@@ -1,11 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:image_network/image_network.dart';
-import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/tag.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
+import 'package:tech_note/ui/widgets/thumbnail_image.dart';
 
 class TagPreviewChip extends StatelessWidget {
   const TagPreviewChip({
@@ -51,20 +49,8 @@ class TagPreviewChip extends StatelessWidget {
           ),
         ),
       );
-    } else if (url != null) {
-      return ClipOval(
-        child: ImageNetwork(
-          image: url!,
-          imageCache: FastCachedImageProvider(url!),
-          height: 30,
-          width: 30,
-          onLoading: const CircularProgressIndicator(
-            color: AppTheme.primaryColor,
-          ),
-        ),
-      );
     } else {
-      return const CircleAvatar(child: Icon(Tag.defaultIcon));
+      return ThumbnailImage.tag(imageUrl: url);
     }
   }
 
