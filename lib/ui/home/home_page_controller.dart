@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tech_note/model/entry.dart';
+import 'package:tech_note/model/tag.dart';
 
 part 'home_page_controller.g.dart';
 
@@ -23,13 +24,27 @@ class HomePageController extends _$HomePageController {
     }
     ref.read(homePageFilterTagIdsStateProvider.notifier).state = [...tmp];
   }
+
+  Future<void> refresh() async {
+    await Future.wait([
+      ref.read(entryNotifierProvider.notifier).refresh(),
+      ref.read(tagNotifierProvider.notifier).refresh(),
+    ]);
+  }
 }
 
 final homePageShowEntriesProvider = Provider((ref) {
-  final entries = ref.watch(entryNotifierProvider);
+  // TODO 表示数を絞った方がいいか・・？
+  List<Entry> entries = ref.watch(entryNotifierProvider);
   final isDescSort = ref.watch(homePageIsUpdateAtDescStateProvider);
+
   // TODO キーワード検索
-  // TODO タグ絞り込み
+
+  // タグ絞り込み
+  final filterTagIds = ref.watch(homePageFilterTagIdsStateProvider);
+  entries = entries.where((e) => e.containTagIds(filterTagIds)).toList();
+
+  // 更新日でのソート
   if (isDescSort) {
     entries.sort((a, b) => b.updateAt.compareTo(a.updateAt));
   } else {
@@ -43,3 +58,12 @@ final homePageFilterTagIdsStateProvider = StateProvider<List<int>>((_) => []);
 
 // 更新日の降順・昇順
 final homePageIsUpdateAtDescStateProvider = StateProvider<bool>((_) => true);
+
+// 更新件数カウント
+final homePageUpdateCountByRefreshProvider = FutureProvider<(int, int)>((ref) async {
+  final results = await Future.wait<int>([
+    ref.read(entryNotifierProvider.notifier).refreshCount(),
+    ref.read(tagNotifierProvider.notifier).refreshCount(),
+  ]);
+  return (results[0], results[1]);
+});

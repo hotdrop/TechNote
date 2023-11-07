@@ -30,17 +30,17 @@ class _AlertDialogWrapper extends ConsumerWidget {
           children: [
             _ViewTagPreview(),
             SizedBox(height: 24),
-            _ViewPickThumbnailButton(),
+            _PickThumbnailButton(),
             SizedBox(height: 16),
-            _ViewSelectColorButton(),
+            _SelectColorButton(),
             SizedBox(height: 24),
-            _ViewTagNameTextField(),
+            _TagNameTextField(),
             SizedBox(height: 8),
-            _ViewTextColorCheckBox(),
+            _TextColorCheckBox(),
             SizedBox(height: 16),
-            _ViewTagAreaDropdown(),
+            _TagAreaDropdown(),
             Spacer(),
-            _ViewButtons(),
+            _Buttons(),
           ],
         ),
       ),
@@ -76,8 +76,8 @@ class _ViewTagPreview extends ConsumerWidget {
   }
 }
 
-class _ViewPickThumbnailButton extends ConsumerWidget {
-  const _ViewPickThumbnailButton();
+class _PickThumbnailButton extends ConsumerWidget {
+  const _PickThumbnailButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -95,8 +95,8 @@ class _ViewPickThumbnailButton extends ConsumerWidget {
   }
 }
 
-class _ViewSelectColorButton extends ConsumerWidget {
-  const _ViewSelectColorButton();
+class _SelectColorButton extends ConsumerWidget {
+  const _SelectColorButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -117,8 +117,8 @@ class _ViewSelectColorButton extends ConsumerWidget {
   }
 }
 
-class _ViewTagNameTextField extends ConsumerWidget {
-  const _ViewTagNameTextField();
+class _TagNameTextField extends ConsumerWidget {
+  const _TagNameTextField();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -134,8 +134,8 @@ class _ViewTagNameTextField extends ConsumerWidget {
   }
 }
 
-class _ViewTextColorCheckBox extends ConsumerWidget {
-  const _ViewTextColorCheckBox();
+class _TextColorCheckBox extends ConsumerWidget {
+  const _TextColorCheckBox();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -155,8 +155,8 @@ class _ViewTextColorCheckBox extends ConsumerWidget {
   }
 }
 
-class _ViewTagAreaDropdown extends ConsumerWidget {
-  const _ViewTagAreaDropdown();
+class _TagAreaDropdown extends ConsumerWidget {
+  const _TagAreaDropdown();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -169,8 +169,8 @@ class _ViewTagAreaDropdown extends ConsumerWidget {
   }
 }
 
-class _ViewButtons extends ConsumerWidget {
-  const _ViewButtons();
+class _Buttons extends ConsumerWidget {
+  const _Buttons();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

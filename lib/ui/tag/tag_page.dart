@@ -6,37 +6,55 @@ import 'package:tech_note/ui/tag/tag_edit_dialog.dart';
 import 'package:tech_note/ui/tag/tag_page_controller.dart';
 import 'package:tech_note/ui/widgets/tags_view_by_area.dart';
 
-class TagPage extends ConsumerWidget {
+class TagPage extends StatelessWidget {
   const TagPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppTheme.appName),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: TagAreaEnum.values.map((area) {
-            return TagsViewByArea(
-              area,
-              onSelected: (tag, isSelect) {
-                ref.read(tagPageSelectProvider.notifier).state = tag;
-                TagEditDialog.show(context);
-              },
-            );
-          }).toList(),
-        ),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
+        child: _ViewBody(),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          ref.read(tagPageSelectProvider.notifier).state = null;
-          TagEditDialog.show(context);
-        },
-      ),
+      floatingActionButton: const _RegisterNewTagFab(),
+    );
+  }
+}
+
+class _ViewBody extends ConsumerWidget {
+  const _ViewBody();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: TagAreaEnum.values.map((area) {
+        return TagsViewByArea(
+          area,
+          onSelected: (tag, isSelect) {
+            ref.read(tagPageSelectProvider.notifier).state = tag;
+            TagEditDialog.show(context);
+          },
+        );
+      }).toList(),
+    );
+  }
+}
+
+class _RegisterNewTagFab extends ConsumerWidget {
+  const _RegisterNewTagFab();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FloatingActionButton(
+      child: const Icon(Icons.add),
+      onPressed: () {
+        ref.read(tagPageSelectProvider.notifier).state = null;
+        TagEditDialog.show(context);
+      },
     );
   }
 }

@@ -16,7 +16,14 @@ class TagRepository {
     return _dummyData();
   }
 
+  Future<int> findRefreshCount() async {
+    await Future<void>.delayed(const Duration(seconds: 2));
+    // TODO 更新データをカウントする
+    return 5;
+  }
+
   Future<void> refresh() async {
+    await Future<void>.delayed(const Duration(seconds: 1));
     // TODO ローカルのTagから最新のupdateAtを取得する
     //    ローカルのTag件数が0
     //      -> Firestoreから全データ取得

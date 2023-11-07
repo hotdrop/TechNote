@@ -12,6 +12,15 @@ class EntryNotifier extends Notifier<List<Entry>> {
   Future<void> onLoad() async {
     state = await ref.read(entryRepositoryProvider).findAll();
   }
+
+  Future<int> refreshCount() async {
+    return await ref.read(entryRepositoryProvider).findRefreshCount();
+  }
+
+  Future<void> refresh() async {
+    await ref.read(entryRepositoryProvider).refresh();
+    await onLoad();
+  }
 }
 
 class Entry {
@@ -34,4 +43,21 @@ class Entry {
   final String note;
   final DateTime createAt;
   final DateTime updateAt;
+
+  bool containTagIds(List<int> filterTagIds) {
+    if (filterTagIds.isEmpty) {
+      return true;
+    }
+    final tagIdWithMain = mergeMainAndSubTagIds();
+    return filterTagIds.every(tagIdWithMain.contains);
+  }
+
+  List<int> mergeMainAndSubTagIds() {
+    final tmp = tagIds;
+    if (!tmp.contains(mainTagId)) {
+      tmp.add(mainTagId);
+    }
+    tmp.sort();
+    return tmp;
+  }
 }

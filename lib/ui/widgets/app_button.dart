@@ -35,3 +35,32 @@ class _SaveButtonState extends State<SaveButton> {
     );
   }
 }
+
+class RefreshButton extends StatefulWidget {
+  const RefreshButton({super.key, required this.onPressed});
+
+  final Future<void> Function() onPressed;
+
+  @override
+  State<RefreshButton> createState() => _RefreshButtonState();
+}
+
+class _RefreshButtonState extends State<RefreshButton> {
+  final _controller = RoundedLoadingButtonController();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 150,
+      child: RoundedLoadingButton(
+        onPressed: () async {
+          await widget.onPressed();
+          _controller.success();
+        },
+        controller: _controller,
+        color: AppTheme.primaryLightColor,
+        child: AppText.normal('Refresh'),
+      ),
+    );
+  }
+}

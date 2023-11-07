@@ -3,23 +3,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/tag.dart';
 import 'package:tech_note/ui/home/home_page_controller.dart';
+import 'package:tech_note/ui/home/refresh_dialog.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 import 'package:tech_note/ui/widgets/entry_card_view.dart';
 import 'package:tech_note/ui/widgets/tags_view_by_area.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppTheme.appName),
-        // TODO Actionに更新ボタン
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 16),
+            child: _RefreshButton(),
+          ),
+        ],
       ),
       body: const Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _ViewHeader(),
             Divider(),
@@ -27,7 +34,21 @@ class HomePage extends ConsumerWidget {
           ],
         ),
       ),
-      // TODO エントリ新規登録のFab
+      floatingActionButton: const _RegisterNewEntryFab(),
+    );
+  }
+}
+
+class _RefreshButton extends ConsumerWidget {
+  const _RefreshButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return IconButton(
+      onPressed: () async {
+        await RefreshDialog.show(context);
+      },
+      icon: const Icon(Icons.refresh, color: AppTheme.primaryLightColor),
     );
   }
 }
@@ -42,13 +63,13 @@ class _ViewHeader extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ViewSearchTextField(),
+          _SearchTextField(),
           SizedBox(height: 16),
           Row(
             children: [
               _ViewTagFilter(),
               SizedBox(width: 16),
-              _ViewFilterSortIcon(),
+              _FilterSortIcon(),
             ],
           ),
         ],
@@ -57,8 +78,8 @@ class _ViewHeader extends ConsumerWidget {
   }
 }
 
-class _ViewSearchTextField extends ConsumerWidget {
-  const _ViewSearchTextField();
+class _SearchTextField extends ConsumerWidget {
+  const _SearchTextField();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,14 +97,14 @@ class _ViewSearchTextField extends ConsumerWidget {
       ),
       style: const TextStyle(fontSize: AppTheme.defaultTextSize),
       onFieldSubmitted: (String query) {
-        // TODO キーワード検索する
+        // TODO キーワード検索
       },
     );
   }
 }
 
-class _ViewFilterSortIcon extends ConsumerWidget {
-  const _ViewFilterSortIcon();
+class _FilterSortIcon extends ConsumerWidget {
+  const _FilterSortIcon();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -128,6 +149,7 @@ class _ViewContents extends ConsumerWidget {
 
     return Flexible(
       child: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 64),
         child: Wrap(
           children: entries
               .map(
@@ -159,7 +181,6 @@ class _TagFilterBottomSheet extends ConsumerWidget {
       ),
       child: SingleChildScrollView(
         child: Column(
-          // TODO フィルターのクリアボタン的なものが欲しい
           children: TagAreaEnum.values.map((area) {
             return TagsViewByArea(
               area,
@@ -171,6 +192,20 @@ class _TagFilterBottomSheet extends ConsumerWidget {
           }).toList(),
         ),
       ),
+    );
+  }
+}
+
+class _RegisterNewEntryFab extends ConsumerWidget {
+  const _RegisterNewEntryFab();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FloatingActionButton(
+      child: const Icon(Icons.add),
+      onPressed: () {
+        // TODO エントリの新規登録画面に遷移する
+      },
     );
   }
 }

@@ -32,7 +32,7 @@ class EntryCardView extends StatelessWidget {
                 children: [
                   _ViewTitleAndDateTime(title: entry.title, updateAt: entry.updateAt),
                   const SizedBox(height: 8),
-                  _ViewTagChips(mainTagId: entry.mainTagId, tagIds: entry.tagIds),
+                  _TagChips(entry: entry),
                 ],
               ),
             ),
@@ -76,15 +76,14 @@ class _ViewTitleAndDateTime extends StatelessWidget {
   }
 }
 
-class _ViewTagChips extends ConsumerWidget {
-  const _ViewTagChips({required this.mainTagId, required this.tagIds});
+class _TagChips extends ConsumerWidget {
+  const _TagChips({required this.entry});
 
-  final int mainTagId;
-  final List<int> tagIds;
+  final Entry entry;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mergeIds = _mergeIds();
+    final mergeIds = entry.mergeMainAndSubTagIds();
     final tags = ref.watch(tagNotifierProvider.notifier).getTags(ids: mergeIds, maxLength: 4);
 
     return Wrap(
@@ -98,14 +97,5 @@ class _ViewTagChips extends ConsumerWidget {
               ))
           .toList(),
     );
-  }
-
-  List<int> _mergeIds() {
-    final tmp = tagIds;
-    if (!tmp.contains(mainTagId)) {
-      tmp.add(mainTagId);
-    }
-    tmp.sort();
-    return tmp;
   }
 }

@@ -21,6 +21,15 @@ class TagNotifier extends Notifier<List<Tag>> {
     state = await ref.read(tagRepositoryProvider).findAll();
   }
 
+  Future<int> refreshCount() async {
+    return await ref.read(tagRepositoryProvider).findRefreshCount();
+  }
+
+  Future<void> refresh() async {
+    await ref.read(tagRepositoryProvider).refresh();
+    await onLoad();
+  }
+
   List<Tag> getTags({required List<int> ids, int? maxLength}) {
     final results = state.where((tag) => ids.contains(tag.id)).toList();
     if (maxLength == null || results.length <= maxLength) {
