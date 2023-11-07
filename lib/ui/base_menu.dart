@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/app_settings.dart';
 import 'package:tech_note/ui/home/home_page.dart';
-import 'package:tech_note/ui/setting/settings_page.dart';
+import 'package:tech_note/ui/info/information_page.dart';
 import 'package:tech_note/ui/tag/tag_page.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 
@@ -12,7 +12,7 @@ class BaseMenu extends ConsumerWidget {
 
   static const int homeIndex = 0;
   static const int tagIndex = 1;
-  static const int settingIndex = 2;
+  static const int infoIndex = 2;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,16 +38,11 @@ class BaseMenu extends ConsumerWidget {
   List<Destination> get destinations => <Destination>[
         const Destination('Home', Icon(Icons.home)),
         const Destination('Tag', Icon(Icons.label)),
-        const Destination('Setting', Icon(Icons.settings)),
+        const Destination('info', Icon(Icons.info)),
       ];
 
   Widget _menuView(int index) {
-    return switch (index) {
-      homeIndex => const HomePage(),
-      tagIndex => const TagPage(),
-      settingIndex => const SettingsPage(),
-      _ => throw Exception(['不正なIndexです index=$index'])
-    };
+    return switch (index) { homeIndex => const HomePage(), tagIndex => const TagPage(), infoIndex => const InformationPage(), _ => throw Exception(['不正なIndexです index=$index']) };
   }
 }
 
