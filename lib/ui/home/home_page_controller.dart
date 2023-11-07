@@ -25,6 +25,10 @@ class HomePageController extends _$HomePageController {
     ref.read(homePageFilterTagIdsStateProvider.notifier).state = [...tmp];
   }
 
+  void inputKeyword(String word) {
+    ref.read(homePageSearchWordStateProvider.notifier).state = word;
+  }
+
   Future<void> refresh() async {
     await Future.wait([
       ref.read(entryNotifierProvider.notifier).refresh(),
@@ -34,24 +38,22 @@ class HomePageController extends _$HomePageController {
 }
 
 final homePageShowEntriesProvider = Provider((ref) {
-  // TODO 表示数を絞った方がいいか・・？
-  List<Entry> entries = ref.watch(entryNotifierProvider);
+  final entries = ref.watch(entryNotifierProvider);
+  final keyword = ref.watch(homePageSearchWordStateProvider);
+  final filterTagIds = ref.watch(homePageFilterTagIdsStateProvider);
   final isDescSort = ref.watch(homePageIsUpdateAtDescStateProvider);
 
-  // TODO キーワード検索
+  // 絞り込みとソート
+  final filteredEntries = entries //
+      .where((e) => e.containKeyword(keyword) && e.containTagIds(filterTagIds))
+      .toList()
+    ..sort((a, b) => isDescSort ? b.updateAt.compareTo(a.updateAt) : a.updateAt.compareTo(b.updateAt));
 
-  // タグ絞り込み
-  final filterTagIds = ref.watch(homePageFilterTagIdsStateProvider);
-  entries = entries.where((e) => e.containTagIds(filterTagIds)).toList();
-
-  // 更新日でのソート
-  if (isDescSort) {
-    entries.sort((a, b) => b.updateAt.compareTo(a.updateAt));
-  } else {
-    entries.sort((a, b) => a.updateAt.compareTo(b.updateAt));
-  }
-  return [...entries];
+  return filteredEntries;
 });
+
+// 検索キーワード
+final homePageSearchWordStateProvider = StateProvider<String>((_) => '');
 
 // 絞り込みで指定したタグID
 final homePageFilterTagIdsStateProvider = StateProvider<List<int>>((_) => []);

@@ -97,7 +97,7 @@ class _SearchTextField extends ConsumerWidget {
       ),
       style: const TextStyle(fontSize: AppTheme.defaultTextSize),
       onFieldSubmitted: (String query) {
-        // TODO キーワード検索
+        ref.read(homePageControllerProvider.notifier).inputKeyword(query);
       },
     );
   }
@@ -109,7 +109,7 @@ class _FilterSortIcon extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDesc = ref.watch(homePageIsUpdateAtDescStateProvider);
-    final label = isDesc ? 'Latest' : 'Oldest';
+    final label = isDesc ? 'Oldest' : 'Latest';
     return OutlinedButton.icon(
       icon: const Icon(Icons.sort),
       label: AppText.normal(label),

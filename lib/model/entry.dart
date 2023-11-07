@@ -44,6 +44,13 @@ class Entry {
   final DateTime createAt;
   final DateTime updateAt;
 
+  bool containKeyword(String word) {
+    if (word.isEmpty) {
+      return true;
+    }
+    return title.contains(word) || note.contains(word);
+  }
+
   bool containTagIds(List<int> filterTagIds) {
     if (filterTagIds.isEmpty) {
       return true;
