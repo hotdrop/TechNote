@@ -1,9 +1,9 @@
-# テクノロジーノート
-このアプリは、技術記事や技術書籍、Podcast、YouTubeなど様々な媒体で技術情報を取り入れる際、気になるものを簡単に記録することができます。
-これまでブラウザのブクマ機能やメモアプリを使って記録していたのですが、もっと簡単に検索および参照して見返したいと思い、このアプリを作ることにしました。
-なお、今回のアプリは試験的にChatGPT(GPT4)と協業してアプリの提案や設計を行いました。
+# Technology Note App
+This app allows you to easily log your interests when consuming technical information through various mediums such as technical articles, technical books, podcasts, and YouTube.  
+Previously, I used the bookmark feature of web browsers and note-taking apps for logging, but I wanted a more straightforward way to search and revisit the information, which led to the creation of this app.  
+Additionally, this app was experimentally designed in collaboration with ChatGPT (GPT-4).
 
-# 技術スタック
+# Technology Stack
 - Frontend
   - Flutter for Web
 - Backend
@@ -12,68 +12,72 @@
   - Firebase Authentication
   - Firebase Storage  
 
-# 設計・検討
-GPT4が挙げてくれた設計検討案をもとに今回のアプリで重点的に検討が必要なものをピックアップし以下に記載します。  
-## データモデル設計
-メモ、記事のリンク、技術書のメモ等を効率的に保存・検索できるようなデータモデルを設計します。
-エンティティと属性の識別、関係の定義、Firestoreのコレクションとドキュメントの設計を同時に考えます。
-テクノロジーノートアプリの主要エンティティとその属性を明確に識別し、エンティティ間の関係を明確に定義し、それらの関連性を理解します。
-次にエンティティと関係を基にFirestoreのコレクションとドキュメントの構造を設計します。最後に構造設計に準拠したFirestoreのルールを定義します。
-## キャッシュ戦略と検索機能
-GPT4の提案で
-「高性能な検索機能を提供するために、全文検索エンジンを利用することを考えてみてください。  Flutterでは、SQLiteと組み合わせてFTS (Full-Text Search) 機能を利用することが可能です。」  
-とのことでしたが、Firestoreで全文検索を実装するには読み書き回数が多くなってしまうことと、ElasticsearchやAlgoliaを使うほど大量のテキストは扱わず複雑になってしまうことから、全文検索サービスは使用しないことにしました。  
-ただ、ネットワークの頻繁な利用やFirestoreの読み込み回数を軽減するため、ローカルストレージを使う案は採用します。
-Firestore+ローカルストレージを使うことの利点・欠点（GPT4より）
-1. 利点: ローカルキャッシュを利用して高速なデータアクセスが可能。オフライン時のデータアクセスが改善される。
-2. 欠点: データ同期のロジックが複雑になり、コードの保守が難しくなる可能性がある。
-## セキュリティ
-Webアプリの場合は誰でもアクセス可能なので、FirebaseのAuthentication機能を利用して利用ユーザーを制限します。
+# Design Considerations
+Based on the design proposals suggested by GPT-4, the following points have been identified as key areas requiring focused consideration for this app.
+## Data Model Design
+We will design a data model that allows for efficient saving and searching of notes, article links, technical book annotations, and the like.  
+This involves identifying entities and attributes, defining relationships, and concurrently considering the design of Firestore collections and documents.  
+The primary entities of the technology notes app and their attributes will be clearly identified, and the relationships between entities will be clearly defined to understand their interconnections.  
+Subsequently, based on these entities and relationships, we will design the structure of Firestore collections and documents. Finally, we will define Firestore rules that comply with the structural design.
+## Caching Strategy and Search Functionality
+Based on GPT-4's suggestion:  
+"To provide a high-performance search function, consider using a full-text search engine. In Flutter, it is possible to utilize Full-Text Search (FTS) features in combination with SQLite."  
+However, implementing full-text search in Firestore could lead to a high number of read and write operations, and using a full-text search service like ElasticSearch or Algolia would be an overcomplication for the amount of text we handle.  
+Therefore, we decided not to use a full-text search service.  
+Nevertheless, to reduce frequent network usage and the number of Firestore reads, we will adopt the use of local storage.  
+Pros and Cons of using Firestore + Local Storage (from GPT-4):  
 
-# データモデル設計詳細
-## Entryデータ
-技術情報の記録データです。`Entries Collection`の直下に各エントリのドキュメントを直接配置する方式を採用し、階層構造は持たせない設計になります。これにより、Firestoreへの読み書き回数を最小限に抑えつつ、シンプルで直感的なデータモデルを維持できます。また、各エントリドキュメントにcategories配列フィールドを設けることで、エントリが複数の技術カテゴリに属する情報を効率的に保持できます。
-## Tagデータ
-技術情報に付加するタグデータです。
-このデータは記録データを簡単かつわかりやすく検索するための重要なデータなので色々検討しました。
-雑多に登録するとごちゃ混ぜになって意味不明になりますが、かといって階層構造にすると複雑で扱いづらくなるためやめました。
-最初はカテゴリーとタグの2段構成で進めていましたが、重複するケースが多く発生したためこの案もやめました。
-最終的にエリアという大きな括りにすることで落ち着きました。エリアは編集の機会がないためアプリ内に定義します。
-なお、エリア分けはThoughtworks社の部類を参考にしました。
+1. Pros: Utilizing local cache enables fast data access and improves data access when offline.
+2. Cons: Data synchronization logic can become complex, potentially making code maintenance more challenging.
+## Security
+In the case of a web application, since it is accessible by anyone, we will use Firebase's Authentication feature to restrict user access.
+
+# Data Model Design
+## Entry Data
+This is the data for recording technical information.  
+We adopt a structure where each entry's document is placed directly under the Entries Collection, without creating a hierarchical structure.  
+This design minimizes read and write operations to Firestore while maintaining a simple and intuitive data model.  
+Additionally, by providing a categories array field in each entry document, we can efficiently maintain information that belongs to multiple technical categories.
+## Tag Data
+This is the tag data used for augmenting technical information.
+We've given this considerable thought as it's crucial for easily and clearly searching the recorded data.
+Registering tags haphazardly can lead to confusion, but creating a hierarchical structure would make it too complex and cumbersome to manage.
+Initially, we proceeded with a two-tier structure of categories and tags, but this was abandoned due to many overlapping cases.
+Ultimately, we settled on using a broader classification called 'areas', which will be defined within the app as they do not require editing. The categorization of areas is based on the classifications used by Thoughtworks.
 1. Language & Framework
 2. Technique
 3. Platform&Tool
 4. Media
-## 読み込みタイミング
-Firestoreは読み込み回数で従量課金されることと、外でも閲覧したいのでネットワーク通信はできるだけ最小限に抑えます。
-Firestoreにデータの更新日時docを持ちます。一度アプリ側でデータを全取得したらその日時を記録しておきます。
-次回アプリを開いた際はローカルの日時とFirestoreに保持した日時をみて、更新されていたらデータを再取得します。
-この時、タグ情報は無条件で全取得します。エントリ情報はupdateAtを見て更新されたデータのみ取得します。
-## データ構造
-Firestoreのデータ構造を決めます。
+## Read Timing
+Since Firestore bills based on the number of reads and because we want to be able to browse content outside where network communication should be minimized, we will limit it as much as possible.
+We maintain a document in Firestore to keep track of data update times. Once the app fetches all the data for the first time, it records that timestamp.
+The next time the app is opened, it compares the local timestamp with the one held in Firestore, and if there have been updates, the data is fetched again.
+At this time, tag information is unconditionally fetched in full, whereas entry information is fetched only if the updateAt indicates that there have been updates.
+## Data Structure
+Decide on the Firestore data structure.
 ```
 TechNote(col)
   - updateInfo(doc)
     [Field]
-    - entryVersion: エントリの更新日時
-    - tagVersion: タグの更新日時
+    - entryVersion: Timestamp of the last entry update
+    - tagVersion: Timestamp of the last tag update
   - TechEntry(doc)
     - Entries Collection(col)
-      - [ランダムID]
+      - [Random ID]
         [Field]
-        - title: エントリのタイトル
-        - url: エントリのURLリンク。URLが無い場合は空
-        - contents: エントリに関するメモや感想
-        - mainTag: エントリのメインでつけるタグID
-        - tags: エントリに関連するタグIDの配列
-        - createdAt: 作成日
-        - updatedAt: 更新日
+        - title: The title of the entry
+        - url: The URL link for the entry; if there is no URL, this is left empty
+        - contents: Notes or comments about the entry
+        - mainTag: The ID of the main tag associated with the entry
+        - tags: An array of tag IDs related to the entry
+        - createdAt: The creation date of the entry
+        - updatedAt: The date the entry was last updated
   - TechTag(doc)
     - Tags(col)
-      - [Tag ID 1からの連番]
+      - [Sequential Tag ID starting from 1]
         [Field]
-        - name: タグ名
-        - thumbnailUrl: サムネイルURL(StorageのURL)
-        - color: カラー(hex)
-        - area: エリアID
+        - name: The name of the tag
+        - thumbnailUrl: The URL for the thumbnail image (located in Storage)
+        - color: The color of the tag (in hex)
+        - area: The ID of the area associated with the tag
 ```
