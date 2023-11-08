@@ -68,7 +68,7 @@ class _ViewTagPreview extends ConsumerWidget {
             tagColor: ref.watch(tagEditColorProvider),
             isTextColorBlack: ref.watch(tagEditIsTextColorBlackProvider),
             imageByteData: ref.watch(tagEditImageByteProvider),
-            url: ref.read(tagPageSelectProvider)?.thumbnailUrl,
+            url: ref.read(tagPageSelectTagProvider)?.thumbnailUrl,
           )
         ],
       ),
@@ -126,7 +126,7 @@ class _TagNameTextField extends ConsumerWidget {
       decoration: const InputDecoration(
         labelText: 'Tag Name',
       ),
-      initialValue: ref.watch(tagPageSelectProvider)?.name,
+      initialValue: ref.watch(tagPageSelectTagProvider)?.name,
       onChanged: (String newVal) {
         ref.read(tagPageControllerProvider.notifier).inputTagName(newVal);
       },

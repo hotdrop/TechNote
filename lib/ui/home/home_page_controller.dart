@@ -43,7 +43,6 @@ final homePageShowEntriesProvider = Provider((ref) {
   final filterTagIds = ref.watch(homePageFilterTagIdsStateProvider);
   final isDescSort = ref.watch(homePageIsUpdateAtDescStateProvider);
 
-  // 絞り込みとソート
   final filteredEntries = entries //
       .where((e) => e.containKeyword(keyword) && e.containTagIds(filterTagIds))
       .toList()
@@ -52,16 +51,12 @@ final homePageShowEntriesProvider = Provider((ref) {
   return filteredEntries;
 });
 
-// 検索キーワード
 final homePageSearchWordStateProvider = StateProvider<String>((_) => '');
 
-// 絞り込みで指定したタグID
 final homePageFilterTagIdsStateProvider = StateProvider<List<int>>((_) => []);
 
-// 更新日の降順・昇順
 final homePageIsUpdateAtDescStateProvider = StateProvider<bool>((_) => true);
 
-// 更新件数カウント
 final homePageUpdateCountByRefreshProvider = FutureProvider<(int, int)>((ref) async {
   final results = await Future.wait<int>([
     ref.read(entryNotifierProvider.notifier).refreshCount(),

@@ -35,7 +35,7 @@ class _ViewBody extends ConsumerWidget {
         return TagsViewByArea(
           area,
           onSelected: (tag, isSelect) {
-            ref.read(tagPageSelectProvider.notifier).state = tag;
+            ref.read(tagPageSelectTagProvider.notifier).state = tag;
             TagEditDialog.show(context);
           },
         );
@@ -52,7 +52,7 @@ class _RegisterNewTagFab extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.add),
       onPressed: () {
-        ref.read(tagPageSelectProvider.notifier).state = null;
+        ref.read(tagPageSelectTagProvider.notifier).state = null;
         TagEditDialog.show(context);
       },
     );

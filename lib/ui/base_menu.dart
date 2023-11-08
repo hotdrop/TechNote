@@ -16,21 +16,21 @@ class BaseMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentIdx = ref.watch(selectMenuIndexProvider);
+    final currentIdx = ref.watch(selectBaseMenuIndexProvider);
     final isMobileSize = MediaQuery.of(context).size.width < 640;
     if (isMobileSize) {
       return _ViewMobileMode(
         destinations: destinations,
         body: _menuView(currentIdx),
         currentIdx: currentIdx,
-        onTap: (index) => ref.read(selectMenuIndexProvider.notifier).state = index,
+        onTap: (index) => ref.read(selectBaseMenuIndexProvider.notifier).state = index,
       );
     } else {
       return _ViewWebMode(
         destinations: destinations,
         body: _menuView(currentIdx),
         currentIdx: currentIdx,
-        onTap: (index) => ref.read(selectMenuIndexProvider.notifier).state = index,
+        onTap: (index) => ref.read(selectBaseMenuIndexProvider.notifier).state = index,
       );
     }
   }

@@ -11,9 +11,7 @@ final appInitFutureProvider = FutureProvider<void>((ref) async {
     ref.read(tagNotifierProvider.notifier).onLoad(),
   ]);
 
-  // Tag画像のキャッシュ
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 30));
 });
 
-// どの画面メニューを表示しているか？
-final selectMenuIndexProvider = StateProvider<int>((_) => BaseMenu.homeIndex);
+final selectBaseMenuIndexProvider = StateProvider<int>((_) => BaseMenu.homeIndex);

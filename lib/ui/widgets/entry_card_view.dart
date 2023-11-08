@@ -93,7 +93,7 @@ class _TagChips extends ConsumerWidget {
           .map((e) => TagChip(
                 tag: e,
                 isSelected: true,
-                onSelected: (_) {/** タップしても特に何もしない */},
+                onSelected: (_) {/** no op */},
               ))
           .toList(),
     );

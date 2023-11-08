@@ -13,7 +13,7 @@ class TagPageController extends _$TagPageController {
   void build() {}
 
   void selectTag(Tag? tag) {
-    ref.read(tagPageSelectProvider.notifier).state = tag;
+    ref.read(tagPageSelectTagProvider.notifier).state = tag;
   }
 
   void inputImageByte(Uint8List newVal) {
@@ -37,7 +37,7 @@ class TagPageController extends _$TagPageController {
   }
 
   Future<void> save() async {
-    final selectTag = ref.read(tagPageSelectProvider);
+    final selectTag = ref.read(tagPageSelectTagProvider);
     final tag = Tag(
       id: (selectTag != null) ? selectTag.id : Tag.noneId,
       name: ref.read(tagEditNameProvider),
@@ -50,12 +50,10 @@ class TagPageController extends _$TagPageController {
   }
 }
 
-// 一覧画面で選択したタグをここに設定する
-final tagPageSelectProvider = StateProvider<Tag?>((ref) => null);
+final tagPageSelectTagProvider = StateProvider<Tag?>((ref) => null);
 
-// 編集ダイアログのUiState
 final _uiStateProvider = StateProvider<_EditDialogUiState>((ref) {
-  final tag = ref.watch(tagPageSelectProvider);
+  final tag = ref.watch(tagPageSelectTagProvider);
   return (tag == null) ? _EditDialogUiState.create() : _EditDialogUiState.createFromTag(tag);
 });
 
