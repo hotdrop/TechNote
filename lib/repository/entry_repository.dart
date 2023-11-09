@@ -31,8 +31,25 @@ class EntryRepository {
 
   List<Entry> _dummyData() {
     final now = DateTime.now();
+    final note = '''
+# マークダウンテスト
+ここに本文を入れます。
+
+## その1
+テストです。アイウエオカキクケコ。hogeです。ホゲホゲ
+なぜhogeなのか？
+
+## その2
+スクロールが問題ないかのテストをする
+
+`ここが強調になるか`のテスト
+**ここが太文字になるか**のテスト
+
+## その3
+コードの確認はするか？
+''';
     return [
-      Entry(id: '1', title: 'タイトルが長いテスト情報です。アイウエオカキくけこ', url: '', mainTagId: 1, tagIds: [1, 10], note: 'ここノート', createAt: now, updateAt: now),
+      Entry(id: '1', title: 'タイトルが長いテスト情報です。アイウエオカキくけこ', url: 'http://www.sample.jp/entry/test=2948jdjdsfhh', mainTagId: 1, tagIds: [1, 10], note: note, createAt: now, updateAt: now),
       Entry(id: '2', title: 'テスト2', url: 'https://www.sample.jp', mainTagId: 2, tagIds: [2, 3, 6, 10, 12], note: 'アイウエオノート', createAt: now, updateAt: DateTime(2023, 11, 5)),
       Entry(id: '3', title: 'テスト3', url: 'https://www.sample.jp', mainTagId: 3, tagIds: [2, 5, 6, 7], note: 'カキクケコノート', createAt: now, updateAt: DateTime(2023, 11, 4)),
       Entry(id: '4', title: 'テスト4', url: 'https://www.sample.jp', mainTagId: 7, tagIds: [6], note: 'ホゲノート', createAt: now, updateAt: DateTime(2023, 11, 1)),

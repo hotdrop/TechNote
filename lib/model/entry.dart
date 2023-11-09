@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:tech_note/repository/entry_repository.dart';
 
 final entryNotifierProvider = NotifierProvider<EntryNotifier, List<Entry>>(EntryNotifier.new);
@@ -43,6 +44,8 @@ class Entry {
   final String note;
   final DateTime createAt;
   final DateTime updateAt;
+
+  static final dateFormat = DateFormat('yyyy/MM/dd');
 
   bool containKeyword(String word) {
     if (word.isEmpty) {

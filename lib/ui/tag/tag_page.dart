@@ -4,6 +4,7 @@ import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/tag.dart';
 import 'package:tech_note/ui/tag/tag_edit_dialog.dart';
 import 'package:tech_note/ui/tag/tag_page_controller.dart';
+import 'package:tech_note/ui/widgets/app_text.dart';
 import 'package:tech_note/ui/widgets/tags_view_by_area.dart';
 
 class TagPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class TagPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppTheme.appName),
+        title: AppText.pageTitle(AppTheme.appName),
       ),
       body: const Padding(
         padding: EdgeInsets.all(16.0),

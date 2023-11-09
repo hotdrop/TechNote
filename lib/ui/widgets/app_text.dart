@@ -8,8 +8,8 @@ class AppText extends StatelessWidget {
     return AppText._(label, 12, isBold, color: color);
   }
 
-  factory AppText.normal(String label, {bool isBold = false, Color? color, TextOverflow? overflow}) {
-    return AppText._(label, AppTheme.defaultTextSize, isBold, color: color, overflow: overflow);
+  factory AppText.normal(String label, {bool isBold = false, Color? color, TextOverflow? overflow, bool isUnderLine = false}) {
+    return AppText._(label, AppTheme.defaultTextSize, isBold, color: color, overflow: overflow, isUnderLine: isUnderLine);
   }
 
   factory AppText.large(String label, {bool isBold = false, Color? color}) {

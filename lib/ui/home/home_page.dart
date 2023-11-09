@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/tag.dart';
+import 'package:tech_note/ui/entry/entry_page.dart';
+import 'package:tech_note/ui/entry/entry_page_controller.dart';
 import 'package:tech_note/ui/home/home_page_controller.dart';
 import 'package:tech_note/ui/home/refresh_dialog.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
@@ -15,7 +17,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppTheme.appName),
+        title: AppText.pageTitle(AppTheme.appName),
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 16),
@@ -155,7 +157,10 @@ class _ViewContents extends ConsumerWidget {
               .map(
                 (e) => SizedBox(
                   width: cardWidth,
-                  child: EntryCardView(e),
+                  child: EntryCardView(e, onTap: () {
+                    ref.read(selectEntryStateProvider.notifier).state = e;
+                    EntryPage.start(context);
+                  }),
                 ),
               )
               .toList(),
@@ -204,7 +209,7 @@ class _RegisterNewEntryFab extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.add),
       onPressed: () {
-        // TODO エントリの新規登録画面に遷移する
+        // TODO Entryの新規登録
       },
     );
   }

@@ -11,7 +11,11 @@ class ThumbnailImage extends StatelessWidget {
     return ThumbnailImage._(imageUrl, 30, true);
   }
 
-  factory ThumbnailImage.entry({String? imageUrl}) {
+  factory ThumbnailImage.entryCard({String? imageUrl}) {
+    return ThumbnailImage._(imageUrl, 50, false);
+  }
+
+  factory ThumbnailImage.entryPage({String? imageUrl}) {
     return ThumbnailImage._(imageUrl, 100, false);
   }
 
@@ -21,21 +25,71 @@ class ThumbnailImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageUrl == null) {
-      const defaultImage = Icon(Tag.defaultIcon);
-      return isCircle ? const CircleAvatar(child: defaultImage) : defaultImage;
+    if (isCircle) {
+      return _ShapeCircle(url: imageUrl, size: size);
+    } else {
+      return _ShapeRectangle(url: imageUrl, size: size);
     }
+  }
+}
 
-    ImageNetwork imageNetwork = ImageNetwork(
-      image: imageUrl!,
-      imageCache: FastCachedImageProvider(imageUrl!),
+class _ShapeCircle extends StatelessWidget {
+  const _ShapeCircle({required this.url, required this.size});
+
+  final String? url;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    if (url == null) {
+      return const CircleAvatar(child: Icon(Tag.defaultIcon));
+    } else {
+      return ClipOval(child: _ThumbnailForNetworkImage(url: url!, size: size));
+    }
+  }
+}
+
+class _ShapeRectangle extends StatelessWidget {
+  const _ShapeRectangle({required this.url, required this.size});
+
+  final String? url;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black, width: 1.0),
+        shape: BoxShape.rectangle,
+      ),
+      child: ClipRect(
+        child: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: (url == null) ? const Icon(Tag.defaultIcon) : _ThumbnailForNetworkImage(url: url!, size: size),
+        ),
+      ),
+    );
+  }
+}
+
+class _ThumbnailForNetworkImage extends StatelessWidget {
+  const _ThumbnailForNetworkImage({required this.url, required this.size});
+
+  final String url;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return ImageNetwork(
+      image: url,
+      imageCache: FastCachedImageProvider(url),
       height: size,
       width: size,
       onLoading: const CircularProgressIndicator(
         color: AppTheme.primaryColor,
       ),
     );
-
-    return isCircle ? ClipOval(child: imageNetwork) : imageNetwork;
   }
 }

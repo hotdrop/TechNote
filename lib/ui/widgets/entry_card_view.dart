@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:tech_note/model/entry.dart';
 import 'package:tech_note/model/tag.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
@@ -8,9 +7,10 @@ import 'package:tech_note/ui/widgets/tag_chip.dart';
 import 'package:tech_note/ui/widgets/thumbnail_image.dart';
 
 class EntryCardView extends StatelessWidget {
-  const EntryCardView(this.entry, {super.key});
+  const EntryCardView(this.entry, {super.key, required this.onTap});
 
   final Entry entry;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,24 +19,27 @@ class EntryCardView extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _ViewImage(entry.mainTagId),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _ViewTitleAndDateTime(title: entry.title, updateAt: entry.updateAt),
-                  const SizedBox(height: 8),
-                  _TagChips(entry: entry),
-                ],
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _ViewImage(entry.mainTagId),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _ViewTitleAndDateTime(title: entry.title, updateAt: entry.updateAt),
+                    const SizedBox(height: 8),
+                    _TagChips(entry: entry),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -51,7 +54,7 @@ class _ViewImage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tag = ref.watch(tagNotifierProvider.notifier).getTag(mainTagId);
-    return ThumbnailImage.entry(imageUrl: tag?.thumbnailUrl);
+    return ThumbnailImage.entryCard(imageUrl: tag?.thumbnailUrl);
   }
 }
 
@@ -61,8 +64,6 @@ class _ViewTitleAndDateTime extends StatelessWidget {
   final String title;
   final DateTime updateAt;
 
-  static final dateFormat = DateFormat('yyyy/MM/dd');
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -70,7 +71,7 @@ class _ViewTitleAndDateTime extends StatelessWidget {
       children: [
         Flexible(child: AppText.normal(title, overflow: TextOverflow.ellipsis)),
         const SizedBox(width: 8),
-        AppText.normal(dateFormat.format(updateAt)),
+        AppText.normal(Entry.dateFormat.format(updateAt)),
       ],
     );
   }

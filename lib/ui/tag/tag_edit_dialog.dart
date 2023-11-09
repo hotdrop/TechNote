@@ -40,7 +40,7 @@ class _AlertDialogWrapper extends ConsumerWidget {
             SizedBox(height: 16),
             _TagAreaDropdown(),
             Spacer(),
-            _Buttons(),
+            _ActionButtons(),
           ],
         ),
       ),
@@ -169,8 +169,8 @@ class _TagAreaDropdown extends ConsumerWidget {
   }
 }
 
-class _Buttons extends ConsumerWidget {
-  const _Buttons();
+class _ActionButtons extends ConsumerWidget {
+  const _ActionButtons();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

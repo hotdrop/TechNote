@@ -15,7 +15,7 @@ class InformationPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppTheme.appName),
+        title: AppText.pageTitle(AppTheme.appName),
       ),
       body: ref.watch(informationPageControllerProvider).when(
             data: (data) => _ViewBody(data),
@@ -58,12 +58,11 @@ class _ViewBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const _ViewAccountInfo(),
-          const SizedBox(height: 8),
-          AppText.normal('Version: ${packageInfo.version}'),
+          _ViewVersion(packageInfo.version),
+          const _ViewEntryDataLabel(),
+          const _ViewTagDataLabel(),
           const SizedBox(height: 8),
           _ViewLicense(packageInfo),
-          const SizedBox(height: 8),
-          const _ViewDataCountLabel(),
         ],
       ),
     );
@@ -83,6 +82,49 @@ class _ViewAccountInfo extends ConsumerWidget {
       ),
       title: AppText.normal('Google Account'),
       subtitle: AppText.normal('sample.dummy@example.com'),
+    );
+  }
+}
+
+class _ViewVersion extends StatelessWidget {
+  const _ViewVersion(this.version);
+
+  final String version;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.info_rounded, size: 32),
+      title: AppText.normal('App Version'),
+      subtitle: AppText.normal(version),
+    );
+  }
+}
+
+class _ViewEntryDataLabel extends ConsumerWidget {
+  const _ViewEntryDataLabel();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cnt = ref.watch(entryNotifierProvider).length;
+    return ListTile(
+      leading: const Icon(Icons.book, size: 32),
+      title: AppText.normal('Number of EntryData'),
+      subtitle: AppText.normal(cnt.toString()),
+    );
+  }
+}
+
+class _ViewTagDataLabel extends ConsumerWidget {
+  const _ViewTagDataLabel();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cnt = ref.watch(tagNotifierProvider).length;
+    return ListTile(
+      leading: const Icon(Icons.label, size: 32),
+      title: AppText.normal('Number of TagData'),
+      subtitle: AppText.normal(cnt.toString()),
     );
   }
 }
@@ -107,25 +149,6 @@ class _ViewLicense extends ConsumerWidget {
         padding: EdgeInsets.all(8.0),
         child: Text('License'),
       ),
-    );
-  }
-}
-
-class _ViewDataCountLabel extends ConsumerWidget {
-  const _ViewDataCountLabel();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final entryDataCnt = ref.watch(entryNotifierProvider).length;
-    final tagDataCnt = ref.watch(tagNotifierProvider).length;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AppText.normal('[Local hold data]', isBold: true),
-        AppText.normal('  - Number of EntryData: $entryDataCnt'),
-        AppText.normal('  - Number of TagData: $tagDataCnt'),
-      ],
     );
   }
 }
