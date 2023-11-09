@@ -60,12 +60,9 @@ class _ViewDataCountLabels extends ConsumerWidget {
       loading: () {
         return Row(
           children: [
-            AppText.normal(
-              'Now Loading',
-              color: AppTheme.primaryLightColor,
-            ),
+            AppText.normal('Now Loading', color: Theme.of(context).primaryColor),
             const SizedBox(width: 16),
-            LoadingAnimationWidget.prograssiveDots(color: AppTheme.primaryLightColor, size: 30),
+            LoadingAnimationWidget.prograssiveDots(color: Theme.of(context).primaryColor, size: 30),
           ],
         );
       },

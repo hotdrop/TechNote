@@ -106,7 +106,6 @@ class _ViewMobileMode extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        selectedItemColor: AppTheme.primaryLightColor,
         items: destinations
             .map((e) => BottomNavigationBarItem(
                   icon: e.icon,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tech_note/common/app_theme.dart';
+import 'package:tech_note/model/app_settings.dart';
 import 'package:tech_note/model/entry.dart';
 import 'package:tech_note/model/tag.dart';
 import 'package:tech_note/ui/info/information_page_controller.dart';
@@ -61,6 +62,7 @@ class _ViewBody extends StatelessWidget {
           _ViewVersion(packageInfo.version),
           const _ViewEntryDataLabel(),
           const _ViewTagDataLabel(),
+          const _RowThemeSwitch(),
           const SizedBox(height: 8),
           _ViewLicense(packageInfo),
         ],
@@ -93,10 +95,10 @@ class _ViewVersion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.info_rounded, size: 32),
-      title: AppText.normal('App Version'),
-      subtitle: AppText.normal(version),
+    return _RowItem(
+      iconData: Icons.info_rounded,
+      label: 'Version:',
+      trailing: AppText.normal(version),
     );
   }
 }
@@ -107,10 +109,10 @@ class _ViewEntryDataLabel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cnt = ref.watch(entryNotifierProvider).length;
-    return ListTile(
-      leading: const Icon(Icons.book, size: 32),
-      title: AppText.normal('Number of EntryData'),
-      subtitle: AppText.normal(cnt.toString()),
+    return _RowItem(
+      iconData: Icons.book,
+      label: 'Number of EntryData:',
+      trailing: AppText.normal(cnt.toString()),
     );
   }
 }
@@ -121,10 +123,57 @@ class _ViewTagDataLabel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cnt = ref.watch(tagNotifierProvider).length;
-    return ListTile(
-      leading: const Icon(Icons.label, size: 32),
-      title: AppText.normal('Number of TagData'),
-      subtitle: AppText.normal(cnt.toString()),
+    return _RowItem(
+      iconData: Icons.label,
+      label: 'Number of TagData:',
+      trailing: AppText.normal(cnt.toString()),
+    );
+  }
+}
+
+///
+/// アプリのテーマを変更するスイッチ
+///
+class _RowThemeSwitch extends ConsumerWidget {
+  const _RowThemeSwitch();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDarkMode = ref.watch(appSettingsNotifierProvider).isDarkMode;
+    return _RowItem(
+      iconData: isDarkMode ? Icons.dark_mode : Icons.light_mode,
+      label: 'Change Theme',
+      trailing: Switch(
+        value: isDarkMode,
+        onChanged: (isDark) async {
+          await ref.read(appSettingsNotifierProvider.notifier).setDarkMode(isDark);
+        },
+      ),
+    );
+  }
+}
+
+class _RowItem extends StatelessWidget {
+  const _RowItem({required this.iconData, required this.label, required this.trailing});
+
+  final IconData iconData;
+  final String label;
+  final Widget trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          const SizedBox(width: 16),
+          Icon(iconData, size: 32),
+          const SizedBox(width: 16),
+          AppText.normal(label),
+          const SizedBox(width: 16),
+          trailing,
+        ],
+      ),
     );
   }
 }

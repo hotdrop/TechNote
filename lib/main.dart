@@ -18,6 +18,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDarkMode = ref.watch(appSettingsNotifierProvider).isDarkMode;
     return MaterialApp(
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -26,7 +27,7 @@ class MyApp extends ConsumerWidget {
       ],
       supportedLocales: const [Locale('ja', '')],
       title: AppTheme.appName,
-      theme: AppTheme.theme,
+      theme: isDarkMode ? AppTheme.dark : AppTheme.light,
       home: ref.watch(appInitFutureProvider).when(
             data: (_) => const BaseMenu(),
             error: (error, s) => _ViewOnLoading(errorMessage: '$error'),

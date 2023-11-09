@@ -29,7 +29,7 @@ class _SaveButtonState extends State<SaveButton> {
               }
             : null,
         controller: _controller,
-        color: AppTheme.primaryLightColor,
+        color: AppTheme.getRoundedLoadingButtonColor(context),
         child: AppText.normal('Save'),
       ),
     );
@@ -58,7 +58,7 @@ class _RefreshButtonState extends State<RefreshButton> {
           _controller.success();
         },
         controller: _controller,
-        color: AppTheme.primaryLightColor,
+        color: AppTheme.getRoundedLoadingButtonColor(context),
         child: AppText.normal('Refresh'),
       ),
     );

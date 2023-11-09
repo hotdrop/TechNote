@@ -87,8 +87,8 @@ class _ThumbnailForNetworkImage extends StatelessWidget {
       imageCache: FastCachedImageProvider(url),
       height: size,
       width: size,
-      onLoading: const CircularProgressIndicator(
-        color: AppTheme.primaryColor,
+      onLoading: CircularProgressIndicator(
+        color: Theme.of(context).primaryColor,
       ),
     );
   }

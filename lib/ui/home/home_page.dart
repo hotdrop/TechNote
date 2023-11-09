@@ -50,7 +50,7 @@ class _RefreshButton extends ConsumerWidget {
       onPressed: () async {
         await RefreshDialog.show(context);
       },
-      icon: const Icon(Icons.refresh, color: AppTheme.primaryLightColor),
+      icon: const Icon(Icons.refresh),
     );
   }
 }
