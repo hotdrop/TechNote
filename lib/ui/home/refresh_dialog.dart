@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/ui/home/home_page_controller.dart';
 import 'package:tech_note/ui/widgets/app_button.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';

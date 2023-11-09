@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/app_settings.dart';
 import 'package:tech_note/ui/home/home_page.dart';
 import 'package:tech_note/ui/info/information_page.dart';

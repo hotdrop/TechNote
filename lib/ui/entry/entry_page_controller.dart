@@ -23,7 +23,7 @@ class EntryPageController extends _$EntryPageController {
   }
 
   Future<void> delete() async {
-    // TODO
+    // TODO 削除機能実装
   }
 }
 

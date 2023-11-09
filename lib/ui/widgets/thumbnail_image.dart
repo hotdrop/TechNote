@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_network/image_network.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
-import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/tag.dart';
 
 class ThumbnailImage extends StatelessWidget {
