@@ -29,6 +29,12 @@ class EntryRepository {
     //  ローカルDBに反映する
   }
 
+  Future<void> delete() async {
+    await Future<void>.delayed(const Duration(seconds: 1));
+    // TODO リモートから削除する
+    // ローカルDBから削除する
+  }
+
   List<Entry> _dummyData() {
     final now = DateTime.now();
     final note = '''

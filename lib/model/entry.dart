@@ -22,6 +22,11 @@ class EntryNotifier extends Notifier<List<Entry>> {
     await ref.read(entryRepositoryProvider).refresh();
     await onLoad();
   }
+
+  Future<void> delete(Entry target) async {
+    await ref.read(entryRepositoryProvider).delete();
+    state = List.from(state)..remove(target);
+  }
 }
 
 class Entry {

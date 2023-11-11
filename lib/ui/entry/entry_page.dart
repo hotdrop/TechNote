@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/entry.dart';
+import 'package:tech_note/ui/entry/delete_dialog.dart';
+import 'package:tech_note/ui/entry/entry_edit_page.dart';
 import 'package:tech_note/ui/entry/entry_page_controller.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 import 'package:tech_note/ui/widgets/markdown_text.dart';
@@ -213,15 +215,15 @@ class _ActionButtons extends ConsumerWidget {
             left: 0,
             child: IconButton(
               icon: const Icon(Icons.delete),
-              onPressed: () {
-                // TODO 削除処理のダイアログ表示
-              },
+              onPressed: () => DeleteDialog.show(context).then((_) {
+                Navigator.pop(context);
+              }),
             )),
         Align(
           alignment: Alignment.center,
           child: ElevatedButton.icon(
             onPressed: () {
-              // TODO 編集画面へ
+              EntryEditPage.start(context);
             },
             icon: const Icon(Icons.edit),
             label: AppText.normal('Edit'),

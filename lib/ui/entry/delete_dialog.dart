@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:tech_note/ui/home/home_page_controller.dart';
+import 'package:tech_note/ui/entry/entry_page_controller.dart';
 import 'package:tech_note/ui/widgets/app_button.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 
-class RefreshDialog {
+class DeleteDialog {
   static Future<void> show(BuildContext context) async {
     return await showDialog<void>(
       context: context,
@@ -26,45 +25,12 @@ class _AlertDialogWrapper extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            AppText.normal('Refresh the latest EntryData and TagData over the network'),
-            const SizedBox(height: 8),
-            const _ViewDataCountLabels(),
+            AppText.error('Delete this entry!\nIs it OK?\n\n(Once deleted, it cannot be restored)'),
             const SizedBox(height: 24),
             const _ActionButtons(),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _ViewDataCountLabels extends ConsumerWidget {
-  const _ViewDataCountLabels();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(homePageUpdateCountByRefreshProvider).when(
-      data: (data) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppText.normal('- Number of update EntryData: ${data.$1}'),
-            AppText.normal('- Number of update TagData: ${data.$2}'),
-          ],
-        );
-      },
-      error: (e, s) {
-        return AppText.error('Error! $e');
-      },
-      loading: () {
-        return Row(
-          children: [
-            AppText.normal('Now Loading', color: Theme.of(context).primaryColor),
-            const SizedBox(width: 16),
-            LoadingAnimationWidget.prograssiveDots(color: Theme.of(context).primaryColor, size: 30),
-          ],
-        );
-      },
     );
   }
 }
@@ -83,10 +49,10 @@ class _ActionButtons extends ConsumerWidget {
         ),
         const SizedBox(width: 24),
         LoadingButton(
-            label: 'Refresh',
+            label: 'Delete',
             onPressed: () async {
               final navigator = Navigator.of(context);
-              await ref.read(homePageControllerProvider.notifier).refresh();
+              await ref.read(entryPageControllerProvider.notifier).delete();
               Future<void>.delayed(const Duration(seconds: 1)).then((_) {
                 navigator.pop();
               });

@@ -36,16 +36,17 @@ class _SaveButtonState extends State<SaveButton> {
   }
 }
 
-class RefreshButton extends StatefulWidget {
-  const RefreshButton({super.key, required this.onPressed});
+class LoadingButton extends StatefulWidget {
+  const LoadingButton({super.key, required this.label, required this.onPressed});
 
+  final String label;
   final Future<void> Function() onPressed;
 
   @override
-  State<RefreshButton> createState() => _RefreshButtonState();
+  State<LoadingButton> createState() => _LoadingButtonState();
 }
 
-class _RefreshButtonState extends State<RefreshButton> {
+class _LoadingButtonState extends State<LoadingButton> {
   final _controller = RoundedLoadingButtonController();
 
   @override
@@ -59,7 +60,7 @@ class _RefreshButtonState extends State<RefreshButton> {
         },
         controller: _controller,
         color: AppTheme.getRoundedLoadingButtonColor(context),
-        child: AppText.normal('Refresh'),
+        child: AppText.normal(widget.label),
       ),
     );
   }
