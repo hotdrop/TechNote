@@ -26,15 +26,15 @@ class _SharedPrefs {
   // }
 
   // 以下は型別のデータ格納/取得処理
-  Future<String?> _getString(String key) async {
-    final prefs = await _ref.read(_sharefPregerencesProvider);
-    return prefs.getString(key);
-  }
+  // Future<String?> _getString(String key) async {
+  //   final prefs = await _ref.read(_sharefPregerencesProvider);
+  //   return prefs.getString(key);
+  // }
 
-  Future<void> _saveString(String key, String value) async {
-    final prefs = await _ref.read(_sharefPregerencesProvider);
-    prefs.setString(key, value);
-  }
+  // Future<void> _saveString(String key, String value) async {
+  //   final prefs = await _ref.read(_sharefPregerencesProvider);
+  //   prefs.setString(key, value);
+  // }
 
   Future<bool> _getBool(String key, {required bool defaultValue}) async {
     final prefs = await _ref.read(_sharefPregerencesProvider);

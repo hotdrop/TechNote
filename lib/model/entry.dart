@@ -63,16 +63,6 @@ class Entry {
     if (filterTagIds.isEmpty) {
       return true;
     }
-    final tagIdWithMain = mergeMainAndSubTagIds();
-    return filterTagIds.every(tagIdWithMain.contains);
-  }
-
-  List<int> mergeMainAndSubTagIds() {
-    final tmp = tagIds;
-    if (!tmp.contains(mainTagId)) {
-      tmp.add(mainTagId);
-    }
-    tmp.sort();
-    return tmp;
+    return filterTagIds.every(tagIds.contains);
   }
 }

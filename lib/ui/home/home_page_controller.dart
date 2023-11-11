@@ -16,13 +16,13 @@ class HomePageController extends _$HomePageController {
   }
 
   void selectFilterTag(int id, bool isSelect) {
-    final tmp = ref.read(homePageFilterTagIdsStateProvider);
-    if (isSelect && !tmp.contains(id)) {
-      tmp.add(id);
+    final selectTagIds = Set<int>.from(ref.read(homePageFilterTagIdsStateProvider));
+    if (isSelect) {
+      selectTagIds.add(id);
     } else {
-      tmp.remove(id);
+      selectTagIds.remove(id);
     }
-    ref.read(homePageFilterTagIdsStateProvider.notifier).state = [...tmp];
+    ref.read(homePageFilterTagIdsStateProvider.notifier).state = selectTagIds.toList();
   }
 
   void inputKeyword(String word) {

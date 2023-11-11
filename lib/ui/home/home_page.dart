@@ -8,7 +8,7 @@ import 'package:tech_note/ui/home/home_page_controller.dart';
 import 'package:tech_note/ui/home/refresh_dialog.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 import 'package:tech_note/ui/widgets/entry_card_view.dart';
-import 'package:tech_note/ui/widgets/tags_view_by_area.dart';
+import 'package:tech_note/ui/widgets/tags_bottom_sheet.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -175,28 +175,11 @@ class _TagFilterBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      height: MediaQuery.of(context).size.height * 0.8,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: TagAreaEnum.values.map((area) {
-            return TagsViewByArea(
-              area,
-              selectTagIds: ref.watch(homePageFilterTagIdsStateProvider),
-              onSelected: (Tag tag, bool isSelect) {
-                ref.read(homePageControllerProvider.notifier).selectFilterTag(tag.id, isSelect);
-              },
-            );
-          }).toList(),
-        ),
-      ),
+    return TagsBottomSheet(
+      selectTagIds: ref.watch(homePageFilterTagIdsStateProvider),
+      onSelected: (Tag tag, bool isSelect) {
+        ref.read(homePageControllerProvider.notifier).selectFilterTag(tag.id, isSelect);
+      },
     );
   }
 }

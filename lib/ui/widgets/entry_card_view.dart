@@ -84,8 +84,7 @@ class _TagChips extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mergeIds = entry.mergeMainAndSubTagIds();
-    final tags = ref.watch(tagNotifierProvider.notifier).getTags(ids: mergeIds, maxLength: 4);
+    final tags = ref.watch(tagNotifierProvider.notifier).getTags(ids: entry.tagIds, maxLength: 4);
 
     return Wrap(
       spacing: 8,

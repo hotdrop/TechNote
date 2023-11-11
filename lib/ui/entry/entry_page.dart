@@ -168,7 +168,7 @@ class _ViewTags extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tagIds = ref.watch(selectEntryStateProvider)?.mergeMainAndSubTagIds() ?? [];
+    final tagIds = ref.watch(selectEntryStateProvider)?.tagIds ?? [];
     final tags = ref.watch(entryPageControllerProvider.notifier).getTags(tagIds);
 
     return Padding(

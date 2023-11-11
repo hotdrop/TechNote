@@ -15,7 +15,7 @@ class ThumbnailImage extends StatelessWidget {
   }
 
   factory ThumbnailImage.entryPage({String? imageUrl}) {
-    return ThumbnailImage._(imageUrl, 100, false);
+    return ThumbnailImage._(imageUrl, 75, false);
   }
 
   final String? imageUrl;
