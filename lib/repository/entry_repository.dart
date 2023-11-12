@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/model/entry.dart';
+import 'package:tech_note/repository/local/shared_prefs.dart';
 
 final entryRepositoryProvider = Provider((ref) => EntryRepository(ref));
 
@@ -9,30 +10,40 @@ class EntryRepository {
   final Ref _ref;
 
   Future<List<Entry>> findAll() async {
-    // ローカルDBからデータを取得して返す
+    // TODO ローカルDBからデータを取得して返す
     return _dummyData();
   }
 
   Future<int> findRefreshCount() async {
+    // TODO lastUpdateAtでFirestoreをwhereして更新データ件数を取得する
     await Future<void>.delayed(const Duration(seconds: 2));
-    // TODO 更新データをカウントする
     return 10;
   }
 
   Future<void> refresh() async {
+    // TODO ローカルのEntry件数が0ならリモートから全データ取得
+    //   ローカルDBに保存
     await Future<void>.delayed(const Duration(seconds: 1));
-    // TODO ローカルのEntryから最新のupdateAtを取得する
-    //    ローカルのEntry件数が0
-    //      -> Firestoreから全データ取得
-    //    ローカルのEntry件数あり
-    //      updateAtの最新日時を、FirestoreのwhereのupdateAtと比較して以降のデータを全取得
-    //  ローカルDBに反映する
+
+    // TODO ローカルのEntry件数が1件以上ある
+    //   updateAtの最新日時を、FirestoreのwhereのupdateAtと比較して以降のデータを全取得
+    //   ローカルDBに反映する;
+    await _ref.read(sharedPrefsProvider).saveLastRefreshEntryDateTime(DateTime.now());
   }
 
-  Future<void> delete() async {
+  Future<void> delete(Entry entry) async {
+    // TODO リモートとローカルDBから削除する
     await Future<void>.delayed(const Duration(seconds: 1));
-    // TODO リモートから削除する
-    // ローカルDBから削除する
+  }
+
+  Future<Entry> save(Entry entry) async {
+    // TODO 保存し、その後にIDが振られるのでそれを反映して返す
+    await Future<void>.delayed(const Duration(seconds: 1));
+    return entry;
+  }
+
+  Future<DateTime?> getLastUpdateDate() async {
+    return _ref.read(sharedPrefsProvider).getLastRefreshEntryDateTime();
   }
 
   List<Entry> _dummyData() {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tech_note/common/app_theme.dart';
@@ -106,13 +107,17 @@ class _ViewVersion extends StatelessWidget {
 class _ViewEntryDataLabel extends ConsumerWidget {
   const _ViewEntryDataLabel();
 
+  static final _dateFormat = DateFormat('yyyy/MM/dd hh:MM:ss');
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cnt = ref.watch(entryNotifierProvider).length;
+    final lastUpdateAt = ref.watch(lastUpdateEntryDateTimeProvider);
+    final lastUpdateAtStr = lastUpdateAt == null ? '-' : _dateFormat.format(lastUpdateAt);
     return _RowItem(
       iconData: Icons.book,
-      label: 'Number of EntryData:',
-      trailing: AppText.normal(cnt.toString()),
+      label: 'Number of EntryData: $cnt',
+      subLabel: 'Last latest load data: $lastUpdateAtStr',
     );
   }
 }
@@ -120,13 +125,17 @@ class _ViewEntryDataLabel extends ConsumerWidget {
 class _ViewTagDataLabel extends ConsumerWidget {
   const _ViewTagDataLabel();
 
+  static final _dateFormat = DateFormat('yyyy/MM/dd hh:MM:ss');
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cnt = ref.watch(tagNotifierProvider).length;
+    final lastUpdateAt = ref.watch(lastUpdateTagDateTimeProvider);
+    final lastUpdateAtStr = lastUpdateAt == null ? '-' : _dateFormat.format(lastUpdateAt);
     return _RowItem(
       iconData: Icons.label,
-      label: 'Number of TagData:',
-      trailing: AppText.normal(cnt.toString()),
+      label: 'Number of TagData: $cnt',
+      subLabel: 'Last latest load data: $lastUpdateAtStr',
     );
   }
 }
@@ -154,11 +163,12 @@ class _RowThemeSwitch extends ConsumerWidget {
 }
 
 class _RowItem extends StatelessWidget {
-  const _RowItem({required this.iconData, required this.label, required this.trailing});
+  const _RowItem({required this.iconData, required this.label, this.subLabel, this.trailing});
 
   final IconData iconData;
   final String label;
-  final Widget trailing;
+  final String? subLabel;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -169,9 +179,17 @@ class _RowItem extends StatelessWidget {
           const SizedBox(width: 16),
           Icon(iconData, size: 32),
           const SizedBox(width: 16),
-          AppText.normal(label),
+          if (subLabel == null) AppText.normal(label),
+          if (subLabel != null)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText.normal(label),
+                AppText.small(subLabel!, color: Colors.grey),
+              ],
+            ),
           const SizedBox(width: 16),
-          trailing,
+          if (trailing != null) trailing!,
         ],
       ),
     );

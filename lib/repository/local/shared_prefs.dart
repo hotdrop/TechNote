@@ -18,23 +18,40 @@ class _SharedPrefs {
   }
 
   ///
-  /// TODO エントリデータの取得日時
+  /// エントリデータの前回更新日時
   ///
-  // Future<String?> getLastRefreshEntryDateTime() async => await _getString('key002');
-  // Future<void> saveLastRefreshEntryDateTime(String value) async {
-  //   await _saveString('key002', value);
-  // }
+  Future<DateTime?> getLastRefreshEntryDateTime() async {
+    final dtEpoch = await _getInt('key002');
+    return dtEpoch == 0 ? null : DateTime.fromMillisecondsSinceEpoch(dtEpoch);
+  }
+
+  Future<void> saveLastRefreshEntryDateTime(DateTime value) async {
+    await _saveInt('key002', value.millisecondsSinceEpoch);
+  }
+
+  ///
+  /// タグデータの前回更新日時
+  ///
+  Future<DateTime?> getLastRefreshTagDateTime() async {
+    final dtEpoch = await _getInt('key003');
+    return dtEpoch == 0 ? null : DateTime.fromMillisecondsSinceEpoch(dtEpoch);
+  }
+
+  Future<void> saveLastRefreshTagDateTime(DateTime value) async {
+    await _saveInt('key003', value.microsecondsSinceEpoch);
+  }
 
   // 以下は型別のデータ格納/取得処理
-  // Future<String?> _getString(String key) async {
-  //   final prefs = await _ref.read(_sharefPregerencesProvider);
-  //   return prefs.getString(key);
-  // }
 
-  // Future<void> _saveString(String key, String value) async {
-  //   final prefs = await _ref.read(_sharefPregerencesProvider);
-  //   prefs.setString(key, value);
-  // }
+  Future<int> _getInt(String key) async {
+    final prefs = await _ref.read(_sharefPregerencesProvider);
+    return prefs.getInt(key) ?? 0;
+  }
+
+  Future<void> _saveInt(String key, int value) async {
+    final prefs = await _ref.read(_sharefPregerencesProvider);
+    prefs.setInt(key, value);
+  }
 
   Future<bool> _getBool(String key, {required bool defaultValue}) async {
     final prefs = await _ref.read(_sharefPregerencesProvider);

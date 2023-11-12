@@ -39,7 +39,7 @@ class TagPageController extends _$TagPageController {
   Future<void> save() async {
     final selectTag = ref.read(tagPageSelectTagProvider);
     final tag = Tag(
-      id: (selectTag != null) ? selectTag.id : Tag.noneId,
+      id: (selectTag != null) ? selectTag.id : Tag.noneTagId,
       name: ref.read(tagEditNameProvider),
       color: ref.read(tagEditColorProvider),
       isTextColorBlack: ref.read(tagEditIsTextColorBlackProvider),

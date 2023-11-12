@@ -19,6 +19,8 @@ class TagNotifier extends Notifier<List<Tag>> {
 
   Future<void> onLoad() async {
     state = await ref.read(tagRepositoryProvider).findAll();
+    final dt = await ref.read(tagRepositoryProvider).getLastUpdateDate();
+    ref.read(lastUpdateTagDateTimeProvider.notifier).state = dt;
   }
 
   Future<int> refreshCount() async {
@@ -43,13 +45,13 @@ class TagNotifier extends Notifier<List<Tag>> {
   }
 
   Future<void> save(Tag tag, Uint8List? imageBytes) async {
-    await ref.read(tagRepositoryProvider).save(tag, imageBytes);
+    final newTag = await ref.read(tagRepositoryProvider).save(tag, imageBytes);
     if (tag.isUnregistered()) {
-      state = [...state, tag];
+      state = [...state, newTag];
     } else {
-      final idx = state.indexWhere((t) => t.id == tag.id);
+      final idx = state.indexWhere((t) => t.id == newTag.id);
       final newTags = state;
-      newTags[idx] = tag;
+      newTags[idx] = newTag;
       state = [...newTags];
     }
   }
@@ -66,7 +68,7 @@ class Tag {
   });
 
   static const defaultIcon = Icons.label;
-  static const noneId = -1;
+  static const noneTagId = -1;
 
   final int id;
   final String name;
@@ -76,7 +78,7 @@ class Tag {
   final String? thumbnailUrl;
 
   bool isUnregistered() {
-    return id == noneId;
+    return id == noneTagId;
   }
 
   static String colorToHex(Color color) {
@@ -100,3 +102,5 @@ enum TagAreaEnum {
 
   const TagAreaEnum(this.name);
 }
+
+final lastUpdateTagDateTimeProvider = StateProvider<DateTime?>((ref) => null);

@@ -42,13 +42,13 @@ class EntryPageController extends _$EntryPageController {
   }
 
   void selectTag(int id, bool isSelect) {
-    final selectTagIds = Set<int>.from(ref.read(_editUiStateProvider).tagIds);
+    final selectTagIds = Set<int>.from(ref.read(_editUiStateProvider).inputTagIds);
     if (isSelect) {
       selectTagIds.add(id);
     } else {
       selectTagIds.remove(id);
     }
-    ref.read(_editUiStateProvider.notifier).update((state) => state.copyWith(tagIds: selectTagIds.toList()));
+    ref.read(_editUiStateProvider.notifier).update((state) => state.copyWith(inputTagIds: selectTagIds.toList()));
   }
 
   void inputNote(String newVal) {
@@ -57,11 +57,19 @@ class EntryPageController extends _$EntryPageController {
 
   Future<void> edit() async {
     final uiState = ref.read(_editUiStateProvider);
-    if (uiState.originalEntry != null) {
-      // TODO 既存Entryのアップデート
-    } else {
-      // TODO 新規登録
-    }
+    final now = DateTime.now();
+
+    final newEntry = Entry(
+      id: uiState.originalEntry?.id ?? Entry.noneEntryId,
+      title: uiState.inputTitle,
+      url: uiState.inputUrl,
+      mainTagId: uiState.inputMainTagId!,
+      tagIds: uiState.inputTagIds,
+      note: uiState.inputNote,
+      createAt: uiState.originalEntry?.createAt ?? now,
+      updateAt: now,
+    );
+    await ref.read(entryNotifierProvider.notifier).save(newEntry);
   }
 }
 
@@ -76,16 +84,16 @@ class _EditUiState {
   _EditUiState._({
     required this.inputTitle,
     required this.inputUrl,
-    required this.mainTagId,
-    required this.tagIds,
+    required this.inputMainTagId,
+    required this.inputTagIds,
     required this.inputNote,
     required this.originalEntry,
   });
 
   final String inputTitle;
   final String? inputUrl;
-  final int? mainTagId;
-  final List<int> tagIds;
+  final int? inputMainTagId;
+  final List<int> inputTagIds;
   final String inputNote;
   final Entry? originalEntry;
 
@@ -93,8 +101,8 @@ class _EditUiState {
     return _EditUiState._(
       inputTitle: '',
       inputUrl: null,
-      mainTagId: null,
-      tagIds: [],
+      inputMainTagId: null,
+      inputTagIds: [],
       inputNote: '',
       originalEntry: null,
     );
@@ -104,8 +112,8 @@ class _EditUiState {
     return _EditUiState._(
       inputTitle: entry.title,
       inputUrl: entry.url,
-      mainTagId: entry.mainTagId,
-      tagIds: entry.tagIds,
+      inputMainTagId: entry.mainTagId,
+      inputTagIds: entry.tagIds,
       inputNote: entry.note,
       originalEntry: entry,
     );
@@ -115,8 +123,8 @@ class _EditUiState {
     return _EditUiState._(
       inputTitle: inputTitle,
       inputUrl: inputUrl,
-      mainTagId: newId,
-      tagIds: tagIds,
+      inputMainTagId: newId,
+      inputTagIds: inputTagIds,
       inputNote: inputNote,
       originalEntry: originalEntry,
     );
@@ -125,14 +133,14 @@ class _EditUiState {
   _EditUiState copyWith({
     String? inputTitle,
     String? inputUrl,
-    List<int>? tagIds,
+    List<int>? inputTagIds,
     String? inputNote,
   }) {
     return _EditUiState._(
       inputTitle: inputTitle ?? this.inputTitle,
       inputUrl: inputUrl ?? this.inputUrl,
-      mainTagId: mainTagId,
-      tagIds: tagIds ?? this.tagIds,
+      inputMainTagId: inputMainTagId,
+      inputTagIds: inputTagIds ?? this.inputTagIds,
       inputNote: inputNote ?? this.inputNote,
       originalEntry: originalEntry,
     );
@@ -148,16 +156,16 @@ final entryEditPageUrlProvider = Provider<String?>((ref) {
 });
 
 final entryEditPageSelectTagIdsProvider = Provider<List<int>>((ref) {
-  return ref.watch(_editUiStateProvider.select((value) => value.tagIds));
+  return ref.watch(_editUiStateProvider.select((value) => value.inputTagIds));
 });
 
 final entryEditPageSelectTagsProvider = Provider<List<Tag>>((ref) {
-  final selectTagIds = ref.watch(_editUiStateProvider.select((value) => value.tagIds));
+  final selectTagIds = ref.watch(_editUiStateProvider.select((value) => value.inputTagIds));
   return ref.read(tagNotifierProvider.notifier).getTags(ids: selectTagIds);
 });
 
 final entryEditPageSelectMainTagProvider = Provider<int?>((ref) {
-  return ref.watch(_editUiStateProvider.select((value) => value.mainTagId));
+  return ref.watch(_editUiStateProvider.select((value) => value.inputMainTagId));
 });
 
 final entryEditPageNoteProvider = Provider<String>((ref) {
@@ -166,7 +174,7 @@ final entryEditPageNoteProvider = Provider<String>((ref) {
 
 final entryEditPagePreparedSaveProvider = Provider<bool>((ref) {
   final inputTitle = ref.watch(_editUiStateProvider.select((value) => value.inputTitle));
-  final selectTagIds = ref.watch(_editUiStateProvider.select((value) => value.tagIds));
+  final selectTagIds = ref.watch(_editUiStateProvider.select((value) => value.inputTagIds));
   final inputNote = ref.watch(_editUiStateProvider.select((value) => value.inputNote));
   return inputTitle.isNotEmpty && selectTagIds.isNotEmpty && inputNote.isNotEmpty;
 });

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/tag.dart';
+import 'package:tech_note/ui/entry/entry_edit_page.dart';
 import 'package:tech_note/ui/entry/entry_page.dart';
 import 'package:tech_note/ui/entry/entry_page_controller.dart';
 import 'package:tech_note/ui/home/home_page_controller.dart';
@@ -192,7 +193,8 @@ class _RegisterNewEntryFab extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.add),
       onPressed: () {
-        // TODO Entryの新規登録
+        ref.read(selectEntryStateProvider.notifier).state = null;
+        EntryEditPage.start(context);
       },
     );
   }

@@ -12,6 +12,8 @@ class EntryNotifier extends Notifier<List<Entry>> {
 
   Future<void> onLoad() async {
     state = await ref.read(entryRepositoryProvider).findAll();
+    final dt = await ref.read(entryRepositoryProvider).getLastUpdateDate();
+    ref.read(lastUpdateEntryDateTimeProvider.notifier).state = dt;
   }
 
   Future<int> refreshCount() async {
@@ -24,8 +26,20 @@ class EntryNotifier extends Notifier<List<Entry>> {
   }
 
   Future<void> delete(Entry target) async {
-    await ref.read(entryRepositoryProvider).delete();
+    await ref.read(entryRepositoryProvider).delete(target);
     state = List.from(state)..remove(target);
+  }
+
+  Future<void> save(Entry target) async {
+    final newEntry = await ref.read(entryRepositoryProvider).save(target);
+    if (target.isUnregistered()) {
+      state = [...state, newEntry];
+    } else {
+      final idx = state.indexWhere((t) => t.id == newEntry.id);
+      final newEntries = state;
+      newEntries[idx] = newEntry;
+      state = [...newEntries];
+    }
   }
 }
 
@@ -50,6 +64,7 @@ class Entry {
   final DateTime createAt;
   final DateTime updateAt;
 
+  static const noneEntryId = '';
   static final dateFormat = DateFormat('yyyy/MM/dd');
 
   bool containKeyword(String word) {
@@ -65,4 +80,10 @@ class Entry {
     }
     return filterTagIds.every(tagIds.contains);
   }
+
+  bool isUnregistered() {
+    return id == noneEntryId;
+  }
 }
+
+final lastUpdateEntryDateTimeProvider = StateProvider<DateTime?>((ref) => null);

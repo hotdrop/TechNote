@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/model/tag.dart';
+import 'package:tech_note/repository/local/shared_prefs.dart';
 
 final tagRepositoryProvider = Provider((ref) => TagRepository(ref));
 
@@ -24,15 +25,17 @@ class TagRepository {
 
   Future<void> refresh() async {
     await Future<void>.delayed(const Duration(seconds: 1));
-    // TODO ローカルのTagから最新のupdateAtを取得する
-    //    ローカルのTag件数が0
-    //      -> Firestoreから全データ取得
-    //    ローカルのTag件数あり
-    //      updateAtの最新日時を、FirestoreのwhereのupdateAtと比較して以降のデータを全取得
-    //  ローカルDBに反映する
+    // TODO ローカルのEntry件数が0ならリモートから全データ取得
+    //   ローカルDBに保存
+    await Future<void>.delayed(const Duration(seconds: 1));
+
+    // TODO ローカルのEntry件数が1件以上ある
+    //   updateAtの最新日時を、FirestoreのwhereのupdateAtと比較して以降のデータを全取得
+    //   ローカルDBに反映する;
+    await _ref.read(sharedPrefsProvider).saveLastRefreshTagDateTime(DateTime.now());
   }
 
-  Future<void> save(Tag tag, Uint8List? imageBytes) async {
+  Future<Tag> save(Tag tag, Uint8List? imageBytes) async {
     await Future<void>.delayed(const Duration(seconds: 1));
     if (tag.isUnregistered()) {
       // TODO 新規保存してローカルDB書き換え
@@ -40,6 +43,12 @@ class TagRepository {
       // TODO IDを指定して保存。imageBytesがnullでなければサムネイル画像更新
       // TODO ローカルDBに保存
     }
+    // TODO 保存した時にIDが振られるのでそれを反映して返す
+    return tag;
+  }
+
+  Future<DateTime?> getLastUpdateDate() async {
+    return _ref.read(sharedPrefsProvider).getLastRefreshEntryDateTime();
   }
 
   List<Tag> _dummyData() {
