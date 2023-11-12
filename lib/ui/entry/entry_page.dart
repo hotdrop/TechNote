@@ -209,7 +209,6 @@ class _ActionButtons extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Stack(
       children: [
-        // TODO この位置に削除ボタンがあるのはちょっと嫌なので考える
         Positioned(
             top: 0,
             left: 0,
