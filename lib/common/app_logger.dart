@@ -10,6 +10,6 @@ class AppLogger {
   }
 
   static Future<void> e(String message, {Exception? e, StackTrace? s}) async {
-    _logger.e(message, e, s);
+    _logger.e(message, error: e, stackTrace: s);
   }
 }

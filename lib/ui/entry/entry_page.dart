@@ -9,7 +9,7 @@ import 'package:tech_note/ui/widgets/app_text.dart';
 import 'package:tech_note/ui/widgets/markdown_text.dart';
 import 'package:tech_note/ui/widgets/tag_chip.dart';
 import 'package:tech_note/ui/widgets/thumbnail_image.dart';
-import 'package:url_launcher_web/url_launcher_web.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EntryPage extends StatelessWidget {
   const EntryPage._();
@@ -136,8 +136,8 @@ class _ViewTitleAndUrl extends ConsumerWidget {
           InkWell(
             child: AppText.weblink(url),
             onTap: () async {
-              final launchPlugin = UrlLauncherPlugin();
-              await launchPlugin.launch(url);
+              final uri = Uri.parse(url);
+              await launchUrl(uri);
             },
           ),
       ],
