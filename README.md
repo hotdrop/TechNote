@@ -43,11 +43,13 @@ This is the tag data used for augmenting technical information.
 We've given this considerable thought as it's crucial for easily and clearly searching the recorded data.
 Registering tags haphazardly can lead to confusion, but creating a hierarchical structure would make it too complex and cumbersome to manage.
 Initially, we proceeded with a two-tier structure of categories and tags, but this was abandoned due to many overlapping cases.
-Ultimately, we settled on using a broader classification called 'areas', which will be defined within the app as they do not require editing. The categorization of areas is based on the classifications used by Thoughtworks.
+Ultimately, we settled on using a broader classification called 'areas', which will be defined within the app as they do not require editing.
+The categorization of areas is based on the classifications used by Thoughtworks.
 1. Language & Framework
 2. Technique
 3. Platform&Tool
 4. Media
+Additionally, confusion is prevented by limiting the maximum number of tags to 5.
 ## Read Timing
 Since Firestore bills based on the number of reads and because we want to be able to browse content outside where network communication should be minimized, we will limit it as much as possible.
 We maintain a document in Firestore to keep track of data update times. Once the app fetches all the data for the first time, it records that timestamp.
@@ -62,7 +64,7 @@ TechNote(col)
     - entryVersion: Timestamp of the last entry update
     - tagVersion: Timestamp of the last tag update
   - TechEntry(doc)
-    - Entries Collection(col)
+    - Entries(col)
       - [Random ID]
         [Field]
         - title: The title of the entry
@@ -74,10 +76,11 @@ TechNote(col)
         - updatedAt: The date the entry was last updated
   - TechTag(doc)
     - Tags(col)
-      - [Sequential Tag ID starting from 1]
+      - [Random ID]
         [Field]
         - name: The name of the tag
         - thumbnailUrl: The URL for the thumbnail image (located in Storage)
         - color: The color of the tag (in hex)
+        - isTextColorBlack: Is name text color black
         - area: The ID of the area associated with the tag
 ```
