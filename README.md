@@ -39,30 +39,26 @@ We adopt a structure where each entry's document is placed directly under the En
 This design minimizes read and write operations to Firestore while maintaining a simple and intuitive data model.  
 Additionally, by providing a categories array field in each entry document, we can efficiently maintain information that belongs to multiple technical categories.
 ## Tag Data
-This is the tag data used for augmenting technical information.
-We've given this considerable thought as it's crucial for easily and clearly searching the recorded data.
-Registering tags haphazardly can lead to confusion, but creating a hierarchical structure would make it too complex and cumbersome to manage.
-Initially, we proceeded with a two-tier structure of categories and tags, but this was abandoned due to many overlapping cases.
-Ultimately, we settled on using a broader classification called 'areas', which will be defined within the app as they do not require editing.
-The categorization of areas is based on the classifications used by Thoughtworks.
+This is the tag data used for augmenting technical information.  
+We've given this considerable thought as it's crucial for easily and clearly searching the recorded data.  
+Registering tags haphazardly can lead to confusion, but creating a hierarchical structure would make it too complex and cumbersome to manage.  
+Initially, we proceeded with a two-tier structure of categories and tags, but this was abandoned due to many overlapping cases.  
+Ultimately, we settled on using a broader classification called 'areas', which will be defined within the app as they do not require editing.  
+The categorization of areas is based on the classifications used by Thoughtworks.   
 1. Language & Framework
 2. Technique
 3. Platform&Tool
 4. Media
 Additionally, confusion is prevented by limiting the maximum number of tags to 5.
 ## Read Timing
-Since Firestore bills based on the number of reads and because we want to be able to browse content outside where network communication should be minimized, we will limit it as much as possible.
-We maintain a document in Firestore to keep track of data update times. Once the app fetches all the data for the first time, it records that timestamp.
-The next time the app is opened, it compares the local timestamp with the one held in Firestore, and if there have been updates, the data is fetched again.
-At this time, tag information is unconditionally fetched in full, whereas entry information is fetched only if the updateAt indicates that there have been updates.
+Since Firestore bills based on the number of reads and because we want to be able to browse content outside where network communication should be minimized, we will limit it as much as possible.  
+Once the app fetches all the data for the first time, it records that timestamp.  
+The next time the app is opened, it compares the local timestamp with the one held in Firestore, and if there have been updates, the data is fetched again.  
+At this time, tag information is unconditionally fetched in full, whereas entry information is fetched only if the updateAt indicates that there have been updates.  
 ## Data Structure
-Decide on the Firestore data structure.
+Decide on the Firestore data structure.  
 ```
 TechNote(col)
-  - updateInfo(doc)
-    [Field]
-    - entryVersion: Timestamp of the last entry update
-    - tagVersion: Timestamp of the last tag update
   - TechEntry(doc)
     - Entries(col)
       - [Random ID]
