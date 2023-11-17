@@ -8,7 +8,7 @@ class TagsViewByArea extends ConsumerWidget {
   const TagsViewByArea(this.tagArea, {super.key, this.selectTagIds, required this.onSelected});
 
   final TagAreaEnum tagArea;
-  final List<int>? selectTagIds;
+  final List<String>? selectTagIds;
   final void Function(Tag, bool) onSelected;
 
   @override

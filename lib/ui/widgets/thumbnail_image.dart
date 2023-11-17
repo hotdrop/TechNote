@@ -43,7 +43,14 @@ class _ShapeCircle extends StatelessWidget {
     if (url == null) {
       return const CircleAvatar(child: Icon(Tag.defaultIcon));
     } else {
-      return ClipOval(child: _ThumbnailForNetworkImage(url: url!, size: size));
+      return ClipOval(
+        child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: _ThumbnailForNetworkImage(
+              url: url!,
+              size: size,
+            )),
+      );
     }
   }
 }

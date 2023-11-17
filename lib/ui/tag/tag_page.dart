@@ -53,7 +53,7 @@ class _RegisterNewTagFab extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.add),
       onPressed: () {
-        ref.read(tagPageSelectTagProvider.notifier).state = null;
+        ref.read(tagPageControllerProvider.notifier).clear();
         TagEditDialog.show(context);
       },
     );

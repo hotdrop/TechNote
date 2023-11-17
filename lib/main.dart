@@ -1,15 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:tech_note/common/app_theme.dart';
+import 'package:tech_note/firebase_options.dart';
 import 'package:tech_note/model/app_settings.dart';
 import 'package:tech_note/ui/base_menu.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // TODO Firebase初期化処理
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const ProviderScope(child: MyApp()));
 }
 

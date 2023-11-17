@@ -10,7 +10,7 @@ class EntryPageController extends _$EntryPageController {
   @override
   void build() {}
 
-  String? getThumbnailUrl(int? tagId) {
+  String? getThumbnailUrl(String? tagId) {
     if (tagId != null) {
       return ref.read(tagNotifierProvider.notifier).getTag(tagId)?.thumbnailUrl;
     } else {
@@ -18,7 +18,7 @@ class EntryPageController extends _$EntryPageController {
     }
   }
 
-  List<Tag> getTags(List<int> tagIds) {
+  List<Tag> getTags(List<String> tagIds) {
     return ref.read(tagNotifierProvider.notifier).getTags(ids: tagIds);
   }
 
@@ -37,12 +37,16 @@ class EntryPageController extends _$EntryPageController {
     ref.read(_editUiStateProvider.notifier).update((state) => state.copyWith(inputUrl: newVal));
   }
 
-  void selectMainTag(int tagId) {
+  void selectMainTag(String tagId) {
     ref.read(_editUiStateProvider.notifier).update((state) => state.copyMainTagId(tagId));
   }
 
-  void selectTag(int id, bool isSelect) {
-    final selectTagIds = Set<int>.from(ref.read(_editUiStateProvider).inputTagIds);
+  void selectTag({required String id, required bool isSelect}) {
+    final selectTagIds = Set<String>.from(ref.read(_editUiStateProvider).inputTagIds);
+    if (isSelect && selectTagIds.length >= Entry.maxAttachTagCount) {
+      return;
+    }
+
     if (isSelect) {
       selectTagIds.add(id);
     } else {
@@ -63,13 +67,17 @@ class EntryPageController extends _$EntryPageController {
       id: uiState.originalEntry?.id ?? Entry.noneEntryId,
       title: uiState.inputTitle,
       url: uiState.inputUrl,
-      mainTagId: uiState.inputMainTagId!,
+      mainTagId: uiState.inputMainTagId ?? '',
       tagIds: uiState.inputTagIds,
       note: uiState.inputNote,
       createAt: uiState.originalEntry?.createAt ?? now,
       updateAt: now,
     );
     await ref.read(entryNotifierProvider.notifier).save(newEntry);
+  }
+
+  void clear() {
+    ref.read(_editUiStateProvider.notifier).state = _EditUiState.create();
   }
 }
 
@@ -92,8 +100,8 @@ class _EditUiState {
 
   final String inputTitle;
   final String? inputUrl;
-  final int? inputMainTagId;
-  final List<int> inputTagIds;
+  final String? inputMainTagId;
+  final List<String> inputTagIds;
   final String inputNote;
   final Entry? originalEntry;
 
@@ -119,7 +127,7 @@ class _EditUiState {
     );
   }
 
-  _EditUiState copyMainTagId(int? newId) {
+  _EditUiState copyMainTagId(String? newId) {
     return _EditUiState._(
       inputTitle: inputTitle,
       inputUrl: inputUrl,
@@ -133,7 +141,7 @@ class _EditUiState {
   _EditUiState copyWith({
     String? inputTitle,
     String? inputUrl,
-    List<int>? inputTagIds,
+    List<String>? inputTagIds,
     String? inputNote,
   }) {
     return _EditUiState._(
@@ -155,7 +163,7 @@ final entryEditPageUrlProvider = Provider<String?>((ref) {
   return ref.watch(_editUiStateProvider.select((value) => value.inputUrl));
 });
 
-final entryEditPageSelectTagIdsProvider = Provider<List<int>>((ref) {
+final entryEditPageSelectTagIdsProvider = Provider<List<String>>((ref) {
   return ref.watch(_editUiStateProvider.select((value) => value.inputTagIds));
 });
 
@@ -164,7 +172,7 @@ final entryEditPageSelectTagsProvider = Provider<List<Tag>>((ref) {
   return ref.read(tagNotifierProvider.notifier).getTags(ids: selectTagIds);
 });
 
-final entryEditPageSelectMainTagProvider = Provider<int?>((ref) {
+final entryEditPageSelectMainTagProvider = Provider<String?>((ref) {
   return ref.watch(_editUiStateProvider.select((value) => value.inputMainTagId));
 });
 

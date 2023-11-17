@@ -107,7 +107,7 @@ class _ViewVersion extends StatelessWidget {
 class _ViewEntryDataLabel extends ConsumerWidget {
   const _ViewEntryDataLabel();
 
-  static final _dateFormat = DateFormat('yyyy/MM/dd hh:MM:ss');
+  static final _dateFormat = DateFormat('yyyy/MM/dd HH:mm:ss');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -125,17 +125,12 @@ class _ViewEntryDataLabel extends ConsumerWidget {
 class _ViewTagDataLabel extends ConsumerWidget {
   const _ViewTagDataLabel();
 
-  static final _dateFormat = DateFormat('yyyy/MM/dd hh:MM:ss');
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cnt = ref.watch(tagNotifierProvider).length;
-    final lastUpdateAt = ref.watch(lastUpdateTagDateTimeProvider);
-    final lastUpdateAtStr = lastUpdateAt == null ? '-' : _dateFormat.format(lastUpdateAt);
     return _RowItem(
       iconData: Icons.label,
       label: 'Number of TagData: $cnt',
-      subLabel: 'Last latest load data: $lastUpdateAtStr',
     );
   }
 }

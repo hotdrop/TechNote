@@ -67,7 +67,7 @@ class _InputTitleTextField extends ConsumerWidget {
       ),
       style: const TextStyle(fontSize: AppTheme.defaultTextSize),
       initialValue: ref.watch(entryEditPageTitleProvider),
-      onFieldSubmitted: (String newVal) {
+      onChanged: (String newVal) {
         ref.read(entryPageControllerProvider.notifier).inputTitle(newVal);
       },
     );
@@ -88,8 +88,8 @@ class _InputUrlTextField extends ConsumerWidget {
       ),
       style: const TextStyle(fontSize: AppTheme.defaultTextSize),
       initialValue: ref.watch(entryEditPageUrlProvider),
-      onFieldSubmitted: (String newVal) {
-        ref.read(entryPageControllerProvider.notifier).inputTitle(newVal);
+      onChanged: (String newVal) {
+        ref.read(entryPageControllerProvider.notifier).inputUrl(newVal);
       },
     );
   }
@@ -178,7 +178,7 @@ class _TagSelectBottomSheet extends ConsumerWidget {
     return TagsBottomSheet(
       selectTagIds: ref.watch(entryEditPageSelectTagIdsProvider),
       onSelected: (Tag tag, bool isSelect) {
-        ref.read(entryPageControllerProvider.notifier).selectTag(tag.id, isSelect);
+        ref.read(entryPageControllerProvider.notifier).selectTag(id: tag.id, isSelect: isSelect);
       },
     );
   }

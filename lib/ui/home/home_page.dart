@@ -193,7 +193,7 @@ class _RegisterNewEntryFab extends ConsumerWidget {
     return FloatingActionButton(
       child: const Icon(Icons.add),
       onPressed: () {
-        ref.read(selectEntryStateProvider.notifier).state = null;
+        ref.read(entryPageControllerProvider.notifier).clear();
         EntryEditPage.start(context);
       },
     );

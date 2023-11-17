@@ -49,7 +49,7 @@ class EntryCardView extends StatelessWidget {
 class _ViewImage extends ConsumerWidget {
   const _ViewImage(this.mainTagId);
 
-  final int mainTagId;
+  final String mainTagId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,7 +84,7 @@ class _TagChips extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tags = ref.watch(tagNotifierProvider.notifier).getTags(ids: entry.tagIds, maxLength: 4);
+    final tags = ref.watch(tagNotifierProvider.notifier).getTags(ids: entry.tagIds);
 
     return Wrap(
       spacing: 8,

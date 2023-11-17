@@ -48,6 +48,10 @@ class TagPageController extends _$TagPageController {
     );
     await ref.read(tagNotifierProvider.notifier).save(tag, ref.read(tagEditImageByteProvider));
   }
+
+  void clear() {
+    ref.read(_uiStateProvider.notifier).state = _EditDialogUiState.create();
+  }
 }
 
 final tagPageSelectTagProvider = StateProvider<Tag?>((ref) => null);

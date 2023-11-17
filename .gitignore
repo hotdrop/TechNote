@@ -52,6 +52,7 @@ app.*.map.json
 *.freezed.dart
 *.mocks.dart
 .firebaserc
+firebase.json
 lib/firebase_options.dart 
 
 /.firebase

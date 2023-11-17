@@ -19,12 +19,10 @@ class TagNotifier extends Notifier<List<Tag>> {
 
   Future<void> onLoad() async {
     state = await ref.read(tagRepositoryProvider).findAll();
-    final dt = await ref.read(tagRepositoryProvider).getLastUpdateDate();
-    ref.read(lastUpdateTagDateTimeProvider.notifier).state = dt;
   }
 
   Future<int> refreshCount() async {
-    return await ref.read(tagRepositoryProvider).findRefreshCount();
+    return await ref.read(tagRepositoryProvider).getUpdateTagCount();
   }
 
   Future<void> refresh() async {
@@ -32,15 +30,11 @@ class TagNotifier extends Notifier<List<Tag>> {
     await onLoad();
   }
 
-  List<Tag> getTags({required List<int> ids, int? maxLength}) {
-    final results = state.where((tag) => ids.contains(tag.id)).toList();
-    if (maxLength == null || results.length <= maxLength) {
-      return results;
-    }
-    return results.getRange(0, maxLength).toList();
+  List<Tag> getTags({required List<String> ids}) {
+    return state.where((tag) => ids.contains(tag.id)).toList();
   }
 
-  Tag? getTag(int id) {
+  Tag? getTag(String id) {
     return state.where((tag) => tag.id == id).firstOrNull;
   }
 
@@ -68,9 +62,9 @@ class Tag {
   });
 
   static const defaultIcon = Icons.label;
-  static const noneTagId = -1;
+  static const noneTagId = '';
 
-  final int id;
+  final String id;
   final String name;
   final Color color;
   final bool isTextColorBlack;
@@ -81,7 +75,7 @@ class Tag {
     return id == noneTagId;
   }
 
-  static String colorToHex(Color color) {
+  String toStringColorHex() {
     return '#${color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}';
   }
 
@@ -89,6 +83,32 @@ class Tag {
     final String cleanedHex = hexColor.replaceAll('#', '');
     final int hexNumber = int.parse(cleanedHex, radix: 16);
     return Color(hexNumber).withOpacity(1.0);
+  }
+
+  static TagAreaEnum indexToTagAreaEnum(int index) {
+    return TagAreaEnum.values.firstWhere((t) => t.index == index);
+  }
+
+  Tag copyId(String id) {
+    return Tag(
+      id: id,
+      name: name,
+      thumbnailUrl: thumbnailUrl,
+      color: color,
+      isTextColorBlack: isTextColorBlack,
+      tagArea: tagArea,
+    );
+  }
+
+  Tag copyThumbnailUrl(String newVal) {
+    return Tag(
+      id: id,
+      name: name,
+      thumbnailUrl: newVal,
+      color: color,
+      isTextColorBlack: isTextColorBlack,
+      tagArea: tagArea,
+    );
   }
 }
 
@@ -102,5 +122,3 @@ enum TagAreaEnum {
 
   const TagAreaEnum(this.name);
 }
-
-final lastUpdateTagDateTimeProvider = StateProvider<DateTime?>((ref) => null);

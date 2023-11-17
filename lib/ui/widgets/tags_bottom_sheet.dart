@@ -5,7 +5,7 @@ import 'package:tech_note/ui/widgets/tags_view_by_area.dart';
 class TagsBottomSheet extends StatelessWidget {
   const TagsBottomSheet({super.key, required this.selectTagIds, required this.onSelected});
 
-  final List<int> selectTagIds;
+  final List<String> selectTagIds;
   final void Function(Tag, bool) onSelected;
 
   @override

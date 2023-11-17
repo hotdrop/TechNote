@@ -29,18 +29,6 @@ class _SharedPrefs {
     await _saveInt('key002', value.millisecondsSinceEpoch);
   }
 
-  ///
-  /// タグデータの前回更新日時
-  ///
-  Future<DateTime?> getLastRefreshTagDateTime() async {
-    final dtEpoch = await _getInt('key003');
-    return dtEpoch == 0 ? null : DateTime.fromMillisecondsSinceEpoch(dtEpoch);
-  }
-
-  Future<void> saveLastRefreshTagDateTime(DateTime value) async {
-    await _saveInt('key003', value.microsecondsSinceEpoch);
-  }
-
   // 以下は型別のデータ格納/取得処理
 
   Future<int> _getInt(String key) async {

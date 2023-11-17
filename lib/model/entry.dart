@@ -58,14 +58,15 @@ class Entry {
   final String id;
   final String title;
   final String? url;
-  final int mainTagId;
-  final List<int> tagIds;
+  final String mainTagId;
+  final List<String> tagIds;
   final String note;
   final DateTime createAt;
   final DateTime updateAt;
 
   static const noneEntryId = '';
   static final dateFormat = DateFormat('yyyy/MM/dd');
+  static const maxAttachTagCount = 5;
 
   bool containKeyword(String word) {
     if (word.isEmpty) {
@@ -74,7 +75,7 @@ class Entry {
     return title.contains(word) || note.contains(word);
   }
 
-  bool containTagIds(List<int> filterTagIds) {
+  bool containTagIds(List<String> filterTagIds) {
     if (filterTagIds.isEmpty) {
       return true;
     }

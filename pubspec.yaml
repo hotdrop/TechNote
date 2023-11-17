@@ -30,6 +30,11 @@ dependencies:
   # local storage
   shared_preferences: ^2.2.2
 
+  # Firebase
+  firebase_core: ^2.22.0
+  firebase_storage: ^11.5.0
+  cloud_firestore: ^4.13.0
+
   # other
   url_launcher: ^6.1.14
   package_info_plus: ^4.2.0

@@ -15,8 +15,8 @@ class HomePageController extends _$HomePageController {
     ref.read(homePageIsUpdateAtDescStateProvider.notifier).state = !current;
   }
 
-  void selectFilterTag(int id, bool isSelect) {
-    final selectTagIds = Set<int>.from(ref.read(homePageFilterTagIdsStateProvider));
+  void selectFilterTag(String id, bool isSelect) {
+    final selectTagIds = Set<String>.from(ref.read(homePageFilterTagIdsStateProvider));
     if (isSelect) {
       selectTagIds.add(id);
     } else {
@@ -53,7 +53,7 @@ final homePageShowEntriesProvider = Provider((ref) {
 
 final homePageSearchWordStateProvider = StateProvider<String>((_) => '');
 
-final homePageFilterTagIdsStateProvider = StateProvider<List<int>>((_) => []);
+final homePageFilterTagIdsStateProvider = StateProvider<List<String>>((_) => []);
 
 final homePageIsUpdateAtDescStateProvider = StateProvider<bool>((_) => true);
 
