@@ -204,7 +204,7 @@ class _ViewLicense extends ConsumerWidget {
           context: context,
           applicationName: packageInfo.appName,
           applicationVersion: packageInfo.version,
-          // applicationIcon: Image.asset('assets/images/ic_app.png'), // TODO アプリアイコンを設定する
+          applicationIcon: Image.asset('assets/images/ic_launch.png'),
         );
       },
       child: const Padding(
