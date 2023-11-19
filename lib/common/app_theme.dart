@@ -4,7 +4,7 @@ class AppTheme {
   AppTheme._();
 
   static const Color _primaryColorDark = Color.fromARGB(255, 232, 181, 248);
-  static const Color _primaryColorLight = Colors.blueAccent;
+  static const Color _primaryColorLight = Color.fromARGB(255, 60, 134, 210);
   static const Color defaultTagColor = Color.fromARGB(255, 227, 227, 227);
 
   static const String appName = 'Technology Note';
