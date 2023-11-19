@@ -13,6 +13,7 @@ class AppTheme {
   static final ThemeData dark = ThemeData(
     brightness: Brightness.dark,
     fontFamily: 'Note Sans JP',
+    useMaterial3: false,
     primaryColor: _primaryColorDark,
     appBarTheme: const AppBarTheme(
       centerTitle: true,
@@ -64,6 +65,7 @@ class AppTheme {
   static final ThemeData light = ThemeData(
     brightness: Brightness.light,
     fontFamily: 'Note Sans JP',
+    useMaterial3: false,
     primaryColor: _primaryColorLight,
     colorScheme: const ColorScheme.light(
       primary: _primaryColorLight,

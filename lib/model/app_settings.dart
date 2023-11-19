@@ -4,10 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/model/entry.dart';
 import 'package:tech_note/model/tag.dart';
 import 'package:tech_note/repository/app_settings_repository.dart';
+import 'package:tech_note/repository/local/local_data_source.dart';
 import 'package:tech_note/ui/base_menu.dart';
 
 final appInitFutureProvider = FutureProvider<void>((ref) async {
   // ここでアプリに必要な初期処理を行う
+  await ref.read(localDataSourceProvider).init();
   await Future.wait([
     ref.read(entryNotifierProvider.notifier).onLoad(),
     ref.read(tagNotifierProvider.notifier).onLoad(),
