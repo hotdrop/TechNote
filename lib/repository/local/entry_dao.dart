@@ -62,6 +62,7 @@ class EntryDao {
   }
 
   Future<void> delete(Entry entry) async {
-    // TODO
+    final box = await Hive.openBox<EntryEntity>(EntryEntity.boxName);
+    await box.delete(entry.id);
   }
 }

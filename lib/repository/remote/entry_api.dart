@@ -51,12 +51,14 @@ class _EntryAPI {
       'updateAt': Timestamp.fromDate(entry.updateAt),
     }, SetOptions(merge: true));
 
-    AppLogger.d('Tag情報をFirestoreに保存します。元のID=${entry.id} refID=${docRef.id}');
+    AppLogger.d('Entry情報をFirestoreに保存します。元のID=${entry.id} refID=${docRef.id}');
 
     return docRef.id;
   }
 
   Future<void> delete(Entry entry) async {
-    // TODO
+    final colRef = FirebaseFirestore.instance.collection(_colRoot).doc(_docRoot).collection(_colEntries);
+    AppLogger.d('Entry情報をFirestoreから削除します。ID=${entry.id}');
+    await colRef.doc(entry.id).delete();
   }
 }

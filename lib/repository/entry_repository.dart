@@ -36,8 +36,8 @@ class EntryRepository {
   }
 
   Future<void> delete(Entry entry) async {
-    // TODO リモートとローカルDBから削除する
-    await Future<void>.delayed(const Duration(seconds: 1));
+    await _ref.read(entryApiProvider).delete(entry);
+    await _ref.read(entryDaoProvider).delete(entry);
   }
 
   Future<DateTime?> getLastUpdateDate() async {
