@@ -74,6 +74,7 @@ class EntryPageController extends _$EntryPageController {
       updateAt: now,
     );
     await ref.read(entryNotifierProvider.notifier).save(newEntry);
+    ref.read(selectEntryStateProvider.notifier).state = newEntry;
   }
 
   void clear() {
