@@ -214,9 +214,13 @@ class _ActionButtons extends ConsumerWidget {
             left: 0,
             child: IconButton(
               icon: const Icon(Icons.delete),
-              onPressed: () => DeleteDialog.show(context).then((_) {
-                Navigator.pop(context);
-              }),
+              onPressed: () async {
+                final navigator = Navigator.of(context);
+                final isDelete = await DeleteDialog.show(context);
+                if (isDelete) {
+                  navigator.pop();
+                }
+              },
             )),
         Align(
           alignment: Alignment.center,

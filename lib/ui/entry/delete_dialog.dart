@@ -5,11 +5,12 @@ import 'package:tech_note/ui/widgets/app_button.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 
 class DeleteDialog {
-  static Future<void> show(BuildContext context) async {
-    return await showDialog<void>(
-      context: context,
-      builder: (context) => const _AlertDialogWrapper(),
-    );
+  static Future<bool> show(BuildContext context) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) => const _AlertDialogWrapper(),
+        ) ??
+        false;
   }
 }
 
@@ -44,7 +45,7 @@ class _ActionButtons extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(context, false),
           child: AppText.normal('Cancel'),
         ),
         const SizedBox(width: 24),
@@ -54,7 +55,7 @@ class _ActionButtons extends ConsumerWidget {
               final navigator = Navigator.of(context);
               await ref.read(entryPageControllerProvider.notifier).delete();
               Future<void>.delayed(const Duration(seconds: 1)).then((_) {
-                navigator.pop();
+                navigator.pop(true);
               });
             }),
       ],
