@@ -45,7 +45,12 @@ class AppTheme {
       ),
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.all(_primaryColorDark),
+      fillColor: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.selected)) {
+          return _primaryColorDark;
+        }
+        return null;
+      }),
     ),
     switchTheme: SwitchThemeData(
       trackColor: MaterialStateProperty.all(_primaryColorDark),
@@ -82,7 +87,12 @@ class AppTheme {
       foregroundColor: Colors.white,
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.all(_primaryColorLight),
+      fillColor: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.selected)) {
+          return _primaryColorLight;
+        }
+        return null;
+      }),
     ),
   );
 
