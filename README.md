@@ -65,9 +65,9 @@ TechNote(col)
         [Field]
         - title: The title of the entry
         - url: The URL link for the entry; if there is no URL, this is left empty
-        - contents: Notes or comments about the entry
-        - mainTag: The ID of the main tag associated with the entry
-        - tags: An array of tag IDs related to the entry
+        - note: Notes or comments about the entry
+        - mainTagId: The ID of the main tag associated with the entry
+        - tagIds: An array of tag IDs related to the entry
         - createdAt: The creation date of the entry
         - updatedAt: The date the entry was last updated
   - TechTag(doc)

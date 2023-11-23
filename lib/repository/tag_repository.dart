@@ -15,8 +15,8 @@ class TagRepository {
     return await _ref.read(tagDaoProvider).findAll();
   }
 
-  Future<int> getUpdateTagCount() async {
-    return await _ref.read(tagApiProvider).getUpdateTagCount();
+  Future<int> getRefreshCount() async {
+    return await _ref.read(tagApiProvider).getUpdateCount();
   }
 
   Future<void> refresh() async {

@@ -31,14 +31,14 @@ class _TagApi {
     }).toList();
   }
 
-  Future<int> getUpdateTagCount() async {
+  Future<int> getUpdateCount() async {
     final snapshot = await FirebaseFirestore.instance.collection(_colRoot).doc(_docRoot).collection(_colTags).count().get();
     return snapshot.count;
   }
 
   Future<String> save(Tag tag) async {
-    final tagCollectionRef = FirebaseFirestore.instance.collection(_colRoot).doc(_docRoot).collection(_colTags);
-    final docRef = (tag.isUnregistered()) ? tagCollectionRef.doc() : tagCollectionRef.doc(tag.id);
+    final colRef = FirebaseFirestore.instance.collection(_colRoot).doc(_docRoot).collection(_colTags);
+    final docRef = (tag.isUnregistered()) ? colRef.doc() : colRef.doc(tag.id);
 
     await docRef.set({
       'name': tag.name,

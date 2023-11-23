@@ -22,7 +22,7 @@ class TagNotifier extends Notifier<List<Tag>> {
   }
 
   Future<int> refreshCount() async {
-    return await ref.read(tagRepositoryProvider).getUpdateTagCount();
+    return await ref.read(tagRepositoryProvider).getRefreshCount();
   }
 
   Future<void> refresh() async {

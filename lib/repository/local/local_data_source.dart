@@ -1,5 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:tech_note/repository/local/entity/entry_entity.dart';
 import 'package:tech_note/repository/local/entity/tag_entity.dart';
 
 final localDataSourceProvider = Provider((ref) => const _LocalDataSource());
@@ -13,5 +14,6 @@ class _LocalDataSource {
   Future<void> init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(TagEntityAdapter());
+    Hive.registerAdapter(EntryEntityAdapter());
   }
 }

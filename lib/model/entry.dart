@@ -17,7 +17,7 @@ class EntryNotifier extends Notifier<List<Entry>> {
   }
 
   Future<int> refreshCount() async {
-    return await ref.read(entryRepositoryProvider).findRefreshCount();
+    return await ref.read(entryRepositoryProvider).getRefreshCount();
   }
 
   Future<void> refresh() async {
@@ -84,6 +84,19 @@ class Entry {
 
   bool isUnregistered() {
     return id == noneEntryId;
+  }
+
+  Entry copyId(String newId) {
+    return Entry(
+      id: newId,
+      title: title,
+      url: url,
+      mainTagId: mainTagId,
+      tagIds: tagIds,
+      note: note,
+      createAt: createAt,
+      updateAt: updateAt,
+    );
   }
 }
 
