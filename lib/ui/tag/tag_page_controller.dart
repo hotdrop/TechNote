@@ -50,7 +50,7 @@ class TagPageController extends _$TagPageController {
   }
 
   void clear() {
-    ref.read(_uiStateProvider.notifier).state = _EditDialogUiState.create();
+    ref.read(tagPageSelectTagProvider.notifier).state = null;
   }
 }
 
