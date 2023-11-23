@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/repository/local/shared_prefs.dart';
 
@@ -18,5 +19,15 @@ class _AppSettingRepository {
 
   Future<void> changeLightMode() async {
     await _ref.read(sharedPrefsProvider).saveDarkMode(false);
+  }
+
+  Future<User?> signInWithGoogle() async {
+    GoogleAuthProvider googleProvider = GoogleAuthProvider();
+    googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    googleProvider.setCustomParameters({
+      'login_hint': 'user@gmail.com',
+    });
+    final credential = await FirebaseAuth.instance.signInWithPopup(googleProvider);
+    return credential.user;
   }
 }

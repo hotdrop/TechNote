@@ -77,14 +77,14 @@ class _ViewAccountInfo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO アカウント情報を取得する
+    final appSetting = ref.watch(appSettingsNotifierProvider);
     return ListTile(
       leading: const Icon(
         Icons.account_circle,
         size: 32,
       ),
-      title: AppText.normal('Google Account'),
-      subtitle: AppText.normal('sample.dummy@example.com'),
+      title: AppText.normal(appSetting.loginEmail),
+      subtitle: AppText.normal(appSetting.loginUserName),
     );
   }
 }

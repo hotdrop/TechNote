@@ -10,13 +10,19 @@ import 'package:tech_note/ui/base_menu.dart';
 final appInitFutureProvider = FutureProvider<void>((ref) async {
   // ここでアプリに必要な初期処理を行う
   await ref.read(localDataSourceProvider).init();
+  await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 30));
+
+  final user = await ref.read(appSettingsRepositoryProvider).signInWithGoogle();
+  if (user == null) {
+    throw Exception('Google SignInに失敗しました。userがnullです。');
+  }
+
   await Future.wait([
     ref.read(entryNotifierProvider.notifier).onLoad(),
     ref.read(tagNotifierProvider.notifier).onLoad(),
   ]);
 
-  await ref.read(appSettingsNotifierProvider.notifier).refresh();
-  await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 30));
+  await ref.read(appSettingsNotifierProvider.notifier).refresh(name: user.displayName, email: user.email!);
 });
 
 final appSettingsNotifierProvider = NotifierProvider<AppSettingsNotifier, AppSettings>(AppSettingsNotifier.new);
@@ -27,10 +33,10 @@ class AppSettingsNotifier extends Notifier<AppSettings> {
     return const AppSettings();
   }
 
-  Future<void> refresh() async {
+  Future<void> refresh({required String? name, required String email}) async {
     final isDarkMode = await ref.read(appSettingsRepositoryProvider).isDarkMode();
     final mode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
-    state = AppSettings(currentMode: mode);
+    state = AppSettings(loginUserName: name ?? 'ー', loginEmail: email, currentMode: mode);
   }
 
   Future<void> setDarkMode(bool isDark) async {
@@ -39,21 +45,31 @@ class AppSettingsNotifier extends Notifier<AppSettings> {
     } else {
       await ref.read(appSettingsRepositoryProvider).changeLightMode();
     }
-    refresh();
+    final isDarkMode = await ref.read(appSettingsRepositoryProvider).isDarkMode();
+    final mode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    state = state.copyWith(currentMode: mode);
   }
 }
 
 class AppSettings {
   const AppSettings({
+    this.loginUserName = '',
+    this.loginEmail = '',
     this.currentMode = ThemeMode.system,
   });
 
+  final String loginUserName;
+  final String loginEmail;
   final ThemeMode currentMode;
 
   bool get isDarkMode => currentMode == ThemeMode.dark;
 
   AppSettings copyWith({ThemeMode? currentMode}) {
-    return AppSettings(currentMode: currentMode ?? this.currentMode);
+    return AppSettings(
+      loginUserName: loginUserName,
+      loginEmail: loginEmail,
+      currentMode: currentMode ?? this.currentMode,
+    );
   }
 }
 
