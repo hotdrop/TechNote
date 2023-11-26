@@ -32,7 +32,7 @@ class FirestoreHelper {
 
   static List<String> getStringList(Map<String, dynamic>? map, String fieldName) {
     // フィールドが存在しない場合は空のリストを返す
-    if (map == null || !map.containsKey(fieldName) || map[fieldName] == null || map[fieldName]! is String) {
+    if (map == null || !map.containsKey(fieldName) || map[fieldName] == null) {
       return [];
     }
 
