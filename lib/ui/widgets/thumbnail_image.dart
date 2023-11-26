@@ -89,6 +89,7 @@ class _ThumbnailForNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ImageNetwork(
+      key: ValueKey(url),
       image: url,
       imageCache: FastCachedImageProvider(url),
       height: size,
