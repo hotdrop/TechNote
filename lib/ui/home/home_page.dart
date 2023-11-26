@@ -47,6 +47,7 @@ class _RefreshButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // TODO このボタンはinfo画面に移動する
     return IconButton(
       onPressed: () async {
         await RefreshDialog.show(context);
