@@ -36,9 +36,7 @@ class EntryNotifier extends Notifier<List<Entry>> {
       state = [...state, newEntry];
     } else {
       final idx = state.indexWhere((t) => t.id == newEntry.id);
-      final newEntries = state;
-      newEntries[idx] = newEntry;
-      state = [...newEntries];
+      state = List.of(state)..[idx] = newEntry;
     }
   }
 }

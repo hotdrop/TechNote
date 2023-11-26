@@ -44,9 +44,7 @@ class TagNotifier extends Notifier<List<Tag>> {
       state = [...state, newTag];
     } else {
       final idx = state.indexWhere((t) => t.id == newTag.id);
-      final newTags = state;
-      newTags[idx] = newTag;
-      state = [...newTags];
+      state = List.of(state)..[idx] = newTag;
     }
   }
 }
