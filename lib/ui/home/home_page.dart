@@ -6,7 +6,6 @@ import 'package:tech_note/ui/entry/entry_edit_page.dart';
 import 'package:tech_note/ui/entry/entry_page.dart';
 import 'package:tech_note/ui/entry/entry_page_controller.dart';
 import 'package:tech_note/ui/home/home_page_controller.dart';
-import 'package:tech_note/ui/home/refresh_dialog.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 import 'package:tech_note/ui/widgets/entry_card_view.dart';
 import 'package:tech_note/ui/widgets/tags_bottom_sheet.dart';
@@ -19,12 +18,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: AppText.pageTitle(AppTheme.appName),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: _RefreshButton(),
-          ),
-        ],
       ),
       body: const Padding(
         padding: EdgeInsets.all(8.0),
@@ -38,21 +31,6 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: const _RegisterNewEntryFab(),
-    );
-  }
-}
-
-class _RefreshButton extends ConsumerWidget {
-  const _RefreshButton();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // TODO このボタンはinfo画面に移動する
-    return IconButton(
-      onPressed: () async {
-        await RefreshDialog.show(context);
-      },
-      icon: const Icon(Icons.refresh),
     );
   }
 }

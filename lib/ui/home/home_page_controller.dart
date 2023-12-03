@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tech_note/model/entry.dart';
-import 'package:tech_note/model/tag.dart';
 
 part 'home_page_controller.g.dart';
 
@@ -28,13 +27,6 @@ class HomePageController extends _$HomePageController {
   void inputKeyword(String word) {
     ref.read(homePageSearchWordStateProvider.notifier).state = word;
   }
-
-  Future<void> refresh() async {
-    await Future.wait([
-      ref.read(entryNotifierProvider.notifier).refresh(),
-      ref.read(tagNotifierProvider.notifier).refresh(),
-    ]);
-  }
 }
 
 final homePageShowEntriesProvider = Provider((ref) {
@@ -56,11 +48,3 @@ final homePageSearchWordStateProvider = StateProvider<String>((_) => '');
 final homePageFilterTagIdsStateProvider = StateProvider<List<String>>((_) => []);
 
 final homePageIsUpdateAtDescStateProvider = StateProvider<bool>((_) => true);
-
-final homePageUpdateCountByRefreshProvider = FutureProvider<(int, int)>((ref) async {
-  final results = await Future.wait<int>([
-    ref.read(entryNotifierProvider.notifier).refreshCount(),
-    ref.read(tagNotifierProvider.notifier).refreshCount(),
-  ]);
-  return (results[0], results[1]);
-});

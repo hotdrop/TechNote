@@ -7,6 +7,7 @@ import 'package:tech_note/common/app_theme.dart';
 import 'package:tech_note/model/app_settings.dart';
 import 'package:tech_note/model/entry.dart';
 import 'package:tech_note/model/tag.dart';
+import 'package:tech_note/ui/info/refresh_dialog.dart';
 import 'package:tech_note/ui/info/information_page_controller.dart';
 import 'package:tech_note/ui/widgets/app_text.dart';
 
@@ -118,7 +119,20 @@ class _ViewEntryDataLabel extends ConsumerWidget {
       iconData: Icons.book,
       label: 'Number of EntryData: $cnt',
       subLabel: 'Last latest load data: $lastUpdateAtStr',
+      trailing: IconButton(
+        onPressed: () async => await _showRefreshDialog(context, ref),
+        icon: const Icon(Icons.refresh),
+      ),
     );
+  }
+
+  Future<void> _showRefreshDialog(BuildContext context, WidgetRef ref) async {
+    await RefreshDialog.entry(
+      label: 'Refresh the latest data from the server',
+      onRefresh: () async {
+        await ref.read(informationPageControllerProvider.notifier).refreshEntry();
+      },
+    ).show(context);
   }
 }
 
@@ -131,7 +145,20 @@ class _ViewTagDataLabel extends ConsumerWidget {
     return _RowItem(
       iconData: Icons.label,
       label: 'Number of TagData: $cnt',
+      trailing: IconButton(
+        onPressed: () async => await _showRefreshDialog(context, ref),
+        icon: const Icon(Icons.refresh),
+      ),
     );
+  }
+
+  Future<void> _showRefreshDialog(BuildContext context, WidgetRef ref) async {
+    await RefreshDialog.tag(
+      label: 'Refresh the latest data from the server',
+      onRefresh: () async {
+        await ref.read(informationPageControllerProvider.notifier).refreshTag();
+      },
+    ).show(context);
   }
 }
 
