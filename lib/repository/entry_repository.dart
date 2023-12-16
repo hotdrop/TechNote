@@ -32,7 +32,7 @@ class EntryRepository {
     final id = await _ref.read(entryApiProvider).save(entry);
     final newEntry = entry.copyId(id);
     await _ref.read(entryDaoProvider).save(newEntry);
-    return entry;
+    return newEntry;
   }
 
   Future<void> delete(Entry entry) async {
