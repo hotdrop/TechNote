@@ -12,6 +12,15 @@ Additionally, this app was experimentally designed in collaboration with ChatGPT
   - Firebase Authentication
   - Firebase Storage  
 
+# deploy command
+```cmd
+// build
+flutter build web --web-renderer html
+
+// deploy to Firebase hosting
+firebase deploy --only hosting:xxx
+```
+
 # Design Considerations
 Based on the design proposals suggested by GPT-4, the following points have been identified as key areas requiring focused consideration for this app.
 ## Data Model Design
