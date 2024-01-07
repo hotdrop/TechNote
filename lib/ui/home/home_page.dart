@@ -35,11 +35,11 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _ViewHeader extends ConsumerWidget {
+class _ViewHeader extends StatelessWidget {
   const _ViewHeader();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -102,11 +102,11 @@ class _FilterSortIcon extends ConsumerWidget {
   }
 }
 
-class _ViewTagFilter extends ConsumerWidget {
+class _ViewTagFilter extends StatelessWidget {
   const _ViewTagFilter();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return ElevatedButton.icon(
       icon: const Icon(Icons.filter_alt_sharp),
       label: AppText.normal('Tag Filter'),
