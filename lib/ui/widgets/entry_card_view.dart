@@ -29,13 +29,15 @@ class EntryCardView extends StatelessWidget {
               _ViewImage(entry.mainTagId),
               const SizedBox(width: 16),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _ViewTitleAndDateTime(title: entry.title, updateAt: entry.updateAt),
-                    const SizedBox(height: 8),
-                    _TagChips(entry: entry),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _ViewTitleAndDateTime(title: entry.title, updateAt: entry.updateAt),
+                      const SizedBox(height: 8),
+                      _TagChips(entry: entry),
+                    ],
+                  ),
                 ),
               ),
             ],

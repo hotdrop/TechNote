@@ -127,23 +127,26 @@ class _ViewContents extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final entries = ref.watch(homePageShowEntriesProvider);
     final screenWidth = MediaQuery.of(context).size.width;
-    final cardWidth = screenWidth < 600 ? screenWidth : (screenWidth / 2) - 50;
 
-    return Flexible(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 64),
-        child: Wrap(
-          children: entries
-              .map(
-                (e) => SizedBox(
-                  width: cardWidth,
-                  child: EntryCardView(e, onTap: () {
-                    ref.read(selectEntryStateProvider.notifier).state = e;
-                    EntryPage.start(context);
-                  }),
-                ),
-              )
-              .toList(),
+    if (entries.isEmpty) {
+      return const Center(child: Text('no register entry data'));
+    }
+
+    return Expanded(
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: screenWidth < 600 ? 1 : 2,
+          childAspectRatio: screenWidth < 600 ? 5.0 : 6.0,
+          mainAxisSpacing: 4,
+          crossAxisSpacing: 4,
+        ),
+        itemCount: entries.length,
+        itemBuilder: (context, index) => EntryCardView(
+          entries[index],
+          onTap: () {
+            ref.read(selectEntryStateProvider.notifier).state = entries[index];
+            EntryPage.start(context);
+          },
         ),
       ),
     );
