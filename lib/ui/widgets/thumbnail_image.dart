@@ -91,6 +91,7 @@ class _ThumbnailForNetworkImage extends StatelessWidget {
       key: ValueKey(url),
       height: size,
       width: size,
+      fit: BoxFit.fill,
       cacheWidth: 75,
       cacheHeight: 75,
     );
