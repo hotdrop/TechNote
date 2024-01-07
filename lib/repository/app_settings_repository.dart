@@ -22,6 +22,10 @@ class _AppSettingRepository {
   }
 
   Future<User?> signInWithGoogle() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return user;
+    }
     GoogleAuthProvider googleProvider = GoogleAuthProvider();
     googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
     googleProvider.setCustomParameters({
