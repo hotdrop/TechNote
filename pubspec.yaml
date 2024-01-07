@@ -22,8 +22,6 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   file_picker: ^6.1.1
   flutter_colorpicker: ^1.0.3
-  image_network: ^2.5.4
-  fast_cached_network_image: ^1.2.0
   flutter_markdown: ^0.6.18+2
   flutter_highlighter: ^0.1.1
 

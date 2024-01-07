@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_network/image_network.dart';
-import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:tech_note/model/tag.dart';
 
 class ThumbnailImage extends StatelessWidget {
@@ -88,15 +86,11 @@ class _ThumbnailForNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ImageNetwork(
+    return Image.network(
+      url,
       key: ValueKey(url),
-      image: url,
-      imageCache: FastCachedImageProvider(url),
       height: size,
       width: size,
-      onLoading: CircularProgressIndicator(
-        color: Theme.of(context).primaryColor,
-      ),
     );
   }
 }

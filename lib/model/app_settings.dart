@@ -1,4 +1,3 @@
-import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_note/model/entry.dart';
@@ -10,7 +9,6 @@ import 'package:tech_note/ui/base_menu.dart';
 final appInitFutureProvider = FutureProvider<void>((ref) async {
   // ここでアプリに必要な初期処理を行う
   await ref.read(localDataSourceProvider).init();
-  await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 30));
 
   final user = await ref.read(appSettingsRepositoryProvider).signInWithGoogle();
   if (user == null) {
