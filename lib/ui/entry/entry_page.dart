@@ -195,9 +195,7 @@ class _ViewContents extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final note = ref.watch(selectEntryStateProvider)?.note ?? '';
     return Expanded(
-      child: SingleChildScrollView(
-        child: MarkdownText(note: note),
-      ),
+      child: MarkdownText(note: note),
     );
   }
 }
