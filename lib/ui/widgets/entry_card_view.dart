@@ -29,15 +29,13 @@ class EntryCardView extends StatelessWidget {
               _ViewImage(entry.mainTagId),
               const SizedBox(width: 16),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _ViewTitleAndDateTime(title: entry.title, updateAt: entry.updateAt),
-                      const SizedBox(height: 8),
-                      _TagChips(entry: entry),
-                    ],
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _ViewTitleAndDateTime(title: entry.title, updateAt: entry.updateAt),
+                    const SizedBox(height: 8),
+                    _TagChips(entry: entry),
+                  ],
                 ),
               ),
             ],
@@ -88,16 +86,16 @@ class _TagChips extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final tags = ref.watch(tagNotifierProvider.notifier).getTags(ids: entry.tagIds);
 
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: tags
-          .map((e) => TagChip(
-                tag: e,
-                isSelected: true,
-                onSelected: (_) {/** no op */},
-              ))
-          .toList(),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: tags
+            .map((tag) => Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: TagChip(tag: tag, isSelected: true, onSelected: (_) {}),
+                ))
+            .toList(),
+      ),
     );
   }
 }

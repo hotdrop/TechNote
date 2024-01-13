@@ -136,7 +136,7 @@ class _ViewContents extends ConsumerWidget {
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: screenWidth < 600 ? 1 : 2,
-          childAspectRatio: screenWidth < 600 ? 5.0 : 6.0,
+          childAspectRatio: screenWidth < 600 ? 4.0 : 6.0,
           mainAxisSpacing: 4,
           crossAxisSpacing: 4,
         ),
